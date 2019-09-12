@@ -1,0 +1,7 @@
+
+project_java/.idea
+project_java/*.iml
+project_java/target
+project_java/logs
+project_java/out
+project_java/classes
