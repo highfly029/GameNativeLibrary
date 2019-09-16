@@ -6,4 +6,8 @@ project_java/logs
 project_java/out
 project_java/classes
 
-.opendb
+*.opendb
+*.db
+project_cpp/GameNativeLibrary/x64
+*.suo
+*.vcxproj
