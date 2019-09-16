@@ -12,3 +12,4 @@ project_cpp/GameNativeLibrary/x64
 *.suo
 *.vcxproj
 project_cpp/GameNativeLibrary/GameNativeLibrary/x64
+project_cpp/GameNativeLibrary/.vs
