@@ -6,10 +6,7 @@ CC = g++
 GSHARED = -fPIC --shared -lrt -Wl,-E
 CFLAGS = -g -O2 -Wall -msse -msse2 -ffast-math  -mfpmath=sse
 
-RECAST_SRC = ../GameNativeLibrary/dllmain.cpp \
-	../GameNativeLibrary/GameNativeLibrary.cpp \
-	../GameNativeLibrary/stdafx.cpp \
-
+RECAST_SRC = ../GameNativeLibrary/GameNativeLibrary.cpp \
 
 linux : GameNativeLibrary.so
 	$(MAKE) all PLAT=$@ GSHARED="$(GSHARED)"
