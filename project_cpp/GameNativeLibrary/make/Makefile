@@ -11,7 +11,7 @@ RECAST_SRC = ../GameNativeLibrary/javalib.cpp \
 
 
 linux : GameNativeLibrary.so
-        $(MAKE) all PLAT=$@ GSHARED="$(GSHARED)"
+	$(MAKE) all PLAT=$@ GSHARED="$(GSHARED)"
 
 all : GameNativeLibrary.so
 
