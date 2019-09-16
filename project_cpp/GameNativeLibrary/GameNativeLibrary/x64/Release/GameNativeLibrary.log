@@ -1,7 +1,7 @@
 ﻿  GameNativeLibrary.cpp
     正在创建库 D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.lib 和对象 D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.exp
   正在生成代码
-  All 3 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 2 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
   GameNativeLibrary.vcxproj -> D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.dll
   GameNativeLibrary.vcxproj -> D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.pdb (Full PDB)

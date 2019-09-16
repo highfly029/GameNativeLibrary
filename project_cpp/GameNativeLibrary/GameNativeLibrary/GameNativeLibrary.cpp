@@ -11,6 +11,7 @@ using namespace std;
 JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
   (JNIEnv *env, jclass cls, jstring contentStr)
 {
+	/**
 	//获取字符串指针，必须使用指针，不能使用char strContent[],因为GetStringUTFChars()返回值为const char *;
 	const char *strContent = env->GetStringUTFChars(contentStr, JNI_FALSE);
 
@@ -25,4 +26,6 @@ JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
 	strcat(strTemp, str);
 	//返回一个utf的jstring
 	return env->NewStringUTF(strTemp);
+	*/
+	return env->NewStringUTF("testJni in cpp");
 }
