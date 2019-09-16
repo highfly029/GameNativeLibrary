@@ -11,3 +11,4 @@ project_java/classes
 project_cpp/GameNativeLibrary/x64
 *.suo
 *.vcxproj
+project_cpp/GameNativeLibrary/GameNativeLibrary/x64

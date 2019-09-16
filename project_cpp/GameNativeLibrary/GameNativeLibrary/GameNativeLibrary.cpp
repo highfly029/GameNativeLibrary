@@ -4,22 +4,25 @@
 #include "GameNativeLibrary.h"
 #include "jni.h"
 #include <iostream>
+#include "platform.h"
 
 using namespace std;
 
 JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
-  (JNIEnv *env, jclass cls, jstring j_str)
+  (JNIEnv *env, jclass cls, jstring contentStr)
 {
-	cout << "Hello Jni" << endl;
-	const char *c_str = NULL;
-    char buff[128] = { 0 };
-    jboolean isCopy;
-    c_str = env->GetStringUTFChars(j_str, &isCopy);
-    if (c_str == NULL)
-    {
-        printf("out of memory.\n");
-        return NULL;
-    }
-    env->ReleaseStringUTFChars(j_str, c_str);
-    return env->NewStringUTF(buff);
+	//获取字符串指针，必须使用指针，不能使用char strContent[],因为GetStringUTFChars()返回值为const char *;
+	const char *strContent = env->GetStringUTFChars(contentStr, JNI_FALSE);
+
+	char str[] = ", welcome to jni world！";
+
+	//字符串拼接,实现strContent+str1,因为strcat的第一个参数必须为非const类型(可变)，所以不能直接使用strcat()
+	//创建一个新的字符串指针
+	char *strTemp = (char *)malloc(strlen(strContent) + strlen(str) + 1);
+	//拷贝常量到字符串指针
+	strcpy(strTemp, strContent);
+	//拼接str1到strTemp
+	strcat(strTemp, str);
+	//返回一个utf的jstring
+	return env->NewStringUTF(strTemp);
 }
