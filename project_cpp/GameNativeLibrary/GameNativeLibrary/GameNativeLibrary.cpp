@@ -3,6 +3,7 @@
 
 #include "GameNativeLibrary.h"
 #include "jni.h"
+#include <iostream>
 
 using namespace std;
 
@@ -26,4 +27,10 @@ JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
 	return env->NewStringUTF(strTemp);
 	*/
 	return env->NewStringUTF("testJni in cpp");
+}
+
+JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_testReturnVoid
+(JNIEnv *, jclass)
+{
+	cout << "test return void" << endl;
 }

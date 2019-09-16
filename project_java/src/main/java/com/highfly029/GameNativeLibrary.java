@@ -52,8 +52,12 @@ public class GameNativeLibrary {
     }
 
     public static native String testJni(String name);
+    public static native void testReturnVoid();
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
+        testReturnVoid();
+        System.out.println("test void ");
         String name = "jni";
         String text = testJni(name);
         System.out.println("text=" + text);
