@@ -3,8 +3,6 @@
 
 #include "GameNativeLibrary.h"
 #include "jni.h"
-#include <iostream>
-#include "platform.h"
 
 using namespace std;
 
