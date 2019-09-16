@@ -8,7 +8,8 @@ package com.highfly029;
  **/
 public class GameNativeLibrary {
     static {
-        String path = "D:\\project\\GameNativeLibrary\\project_java\\src\\main\\java\\";
+        System.out.println(System.getProperty("user.dir"));//user.dir指定了当前的路径
+        String path = System.getProperty("user.dir") + "\\src\\main\\java\\";
         System.load(path + "GameNativeLibrary.dll");
     }
 
