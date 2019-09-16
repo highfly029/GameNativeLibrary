@@ -17,7 +17,6 @@ public class GameNativeLibrary {
     static {
         try {
             boolean isWindows = System.getProperty("os.name", "").toLowerCase().contains("windows");
-
             String libName = "GameNativeLibrary";
             String suffix = "";
             if (isWindows) {
@@ -33,7 +32,6 @@ public class GameNativeLibrary {
             if (inputStream == null) {
                 System.out.println("cant find GameNativeLibrary.jar");
             }
-
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int n;
