@@ -17,5 +17,5 @@ linux : GameNativeLibrary.so
 all : GameNativeLibrary.so
 
 GameNativeLibrary.so : $(RECAST_SRC)
-	$(CC) $(CFLAGS) $(GSHARED) $^ -o $@ -I../../DemoSource/ -I../../Include -I/opt/jdk1.8.0_45/include -I/opt/jdk1.8.0_45/include/linux
+	$(CC) $(CFLAGS) $(GSHARED) $^ -o $@ -I../GameNativeLibrary
 
