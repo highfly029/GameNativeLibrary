@@ -137,6 +137,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;GAMENATIVELIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files\Java\jdk1.8.0_161\include\win32;C:\Program Files\Java\jdk1.8.0_161\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,8 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNativeLibrary.h" />
-    <ClInclude Include="jni.h" />
-    <ClInclude Include="jni_md.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameNativeLibrary.cpp" />

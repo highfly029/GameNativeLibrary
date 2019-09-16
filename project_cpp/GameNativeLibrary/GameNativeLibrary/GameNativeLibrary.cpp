@@ -20,8 +20,6 @@ JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
         printf("out of memory.\n");
         return NULL;
     }
-    printf("Java Str:%x %s %d %d\n", c_str, c_str, strlen(c_str), isCopy);
-    sprintf_s(buff, "hello %s", c_str);
     env->ReleaseStringUTFChars(j_str, c_str);
     return env->NewStringUTF(buff);
 }
