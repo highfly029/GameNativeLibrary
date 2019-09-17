@@ -34,3 +34,10 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_testReturnVoid
 {
 	cout << "test return void" << endl;
 }
+
+JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_testGetInt
+(JNIEnv *env, jobject obj, jint jint)
+{
+	int a = jint + 1;
+	return a;
+}

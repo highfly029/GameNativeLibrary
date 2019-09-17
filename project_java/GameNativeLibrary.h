@@ -23,6 +23,14 @@ JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
 JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_testReturnVoid
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_highfly029_GameNativeLibrary
+ * Method:    testGetInt
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_testGetInt
+  (JNIEnv *, jobject, jint);
+
 #ifdef __cplusplus
 }
 #endif

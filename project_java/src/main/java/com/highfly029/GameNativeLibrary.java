@@ -53,10 +53,17 @@ public class GameNativeLibrary {
 
     public static native String testJni(String name);
     public static native void testReturnVoid();
+    public native int testGetInt(int num);
+
+    public static void testReturn2() {
+        System.out.println("testReturn2");
+    }
 
     public static void main(String[] args)
     {
-        testReturnVoid();
+        GameNativeLibrary gameNativeLibrary = new GameNativeLibrary();
+        System.out.println("testGetInt=" + gameNativeLibrary.testGetInt(111));
+
         System.out.println("test void ");
         String name = "jni";
         String text = testJni(name);
