@@ -9,7 +9,7 @@ CFLAGS = -g -O2 -Wall -msse -msse2 -ffast-math  -mfpmath=sse
 RECAST_SRC = ../GameNativeLibrary/GameNativeLibrary.cpp \
 
 linux : GameNativeLibrary.so
-        $(MAKE) all PLAT=$@ GSHARED="$(GSHARED)"
+		$(MAKE) all PLAT=$@ GSHARED="$(GSHARED)"
 
 all : GameNativeLibrary.so
 
