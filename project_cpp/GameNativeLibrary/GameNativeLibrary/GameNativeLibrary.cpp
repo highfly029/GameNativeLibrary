@@ -26,7 +26,7 @@ JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
 	//返回一个utf的jstring
 	return env->NewStringUTF(strTemp);
 	*/
-	return env->NewStringUTF("testJni in cpp");
+	return env->NewStringUTF("testJni in cpp with linux");
 }
 
 JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_testReturnVoid

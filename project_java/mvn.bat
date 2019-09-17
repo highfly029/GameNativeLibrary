@@ -1,3 +1,2 @@
-@echo off
-mvn clean compile
+call mvn clean compile
 pause
