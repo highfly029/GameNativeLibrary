@@ -7,6 +7,8 @@ GSHARED = -fPIC --shared -lrt -Wl,-E
 CFLAGS = -g -O2 -Wall -msse -msse2 -ffast-math  -mfpmath=sse
 
 RECAST_SRC = ../GameNativeLibrary/GameNativeLibrary.cpp \
+	../GameNativeLibrary/NavMesh.cpp \
+	
 
 linux : GameNativeLibrary.so
 		$(MAKE) all PLAT=$@ GSHARED="$(GSHARED)"
