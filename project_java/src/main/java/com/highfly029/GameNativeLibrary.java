@@ -111,6 +111,7 @@ public class GameNativeLibrary {
 
         List<float[]> list = gameNativeLibrary.find(meshId, start[0], start[1], start[2], end[0], end[1], end[2]);
 
+        System.out.println("find result");
         for (float[] f : list) {
             System.out.println(f[0] + " " + f[1] + " " + f[2]);
         }
