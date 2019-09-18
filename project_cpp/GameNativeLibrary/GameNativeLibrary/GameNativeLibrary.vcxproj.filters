@@ -92,9 +92,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameNativeLibrary.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="NavMesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -168,6 +165,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\RecastRegion.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameNativeLibrary.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
