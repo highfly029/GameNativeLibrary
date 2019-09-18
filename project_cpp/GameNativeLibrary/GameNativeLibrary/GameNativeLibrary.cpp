@@ -4,16 +4,39 @@
 #include "NavMesh.h"
 #include "platform.h"
 
+
+std::tr1::unordered_map<int, NavMesh*> meshHandlers;
+
+static int navMeshIdIncre = 0;
+
 /*
 * Class:     com_highfly029_GameNativeLibrary
 * Method:    load
 * Signature: (Ljava/lang/String;)I
 */
 JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_load
-(JNIEnv *, jobject, jstring)
+(JNIEnv * env, jobject jobj, jstring path)
 {
-	printf("Java_com_highfly029_GameNativeLibrary_load");
-	return 0;
+	navMeshIdIncre++;
+	int navMeshId = navMeshIdIncre;
+	char buf[256];
+	buf[255] = 0;
+	printf("load mesh");
+	const char *str = env->GetStringUTFChars(path, 0);
+	snprintf(buf, 255, "%s", str);
+	env->ReleaseStringUTFChars(path, str);
+	NavMesh* nav = new NavMesh();
+	bool suc = nav->create(buf);
+	if (!suc) {
+		printf("create failed\n");
+		delete nav;
+		return jint(0);
+	}
+	else {
+		printf("create success\n");
+		meshHandlers[navMeshId] = nav;
+	}
+	return jint(navMeshId);
 }
 
 /*
