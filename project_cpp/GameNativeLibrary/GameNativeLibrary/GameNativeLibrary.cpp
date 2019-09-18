@@ -1,4 +1,8 @@
 #include "GameNativeLibrary.h"
+#include "Recast.h"
+#include "jni.h"
+#include "NavMesh.h"
+#include "platform.h"
 
 /*
 * Class:     com_highfly029_GameNativeLibrary
