@@ -9,26 +9,42 @@ extern "C" {
 #endif
 /*
  * Class:     com_highfly029_GameNativeLibrary
- * Method:    testJni
- * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ * Method:    load
+ * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jstring JNICALL Java_com_highfly029_GameNativeLibrary_testJni
-  (JNIEnv *, jclass, jstring);
+JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_load
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     com_highfly029_GameNativeLibrary
- * Method:    testReturnVoid
- * Signature: ()V
+ * Method:    load2
+ * Signature: (Ljava/lang/String;[B)I
  */
-JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_testReturnVoid
-  (JNIEnv *, jclass);
+JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_load2
+  (JNIEnv *, jobject, jstring, jbyteArray);
 
 /*
  * Class:     com_highfly029_GameNativeLibrary
- * Method:    testGetInt
+ * Method:    find
+ * Signature: (IFFFFFF)Ljava/util/List;
+ */
+JNIEXPORT jobject JNICALL Java_com_highfly029_GameNativeLibrary_find
+  (JNIEnv *, jobject, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     com_highfly029_GameNativeLibrary
+ * Method:    rayCast
+ * Signature: (IFFFFFF)Ljava/util/List;
+ */
+JNIEXPORT jobject JNICALL Java_com_highfly029_GameNativeLibrary_rayCast
+  (JNIEnv *, jobject, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     com_highfly029_GameNativeLibrary
+ * Method:    release
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_testGetInt
+JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_release
   (JNIEnv *, jobject, jint);
 
 #ifdef __cplusplus

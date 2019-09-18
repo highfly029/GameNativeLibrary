@@ -1,7 +1,34 @@
 ﻿  GameNativeLibrary.cpp
+  NavMesh.cpp
+  DetourAlloc.cpp
+  DetourCommon.cpp
+  DetourCrowd.cpp
+  DetourLocalBoundary.cpp
+  DetourNavMesh.cpp
+  DetourNavMeshBuilder.cpp
+  DetourNavMeshQuery.cpp
+  DetourNode.cpp
+  DetourObstacleAvoidance.cpp
+Source\DetourObstacleAvoidance.cpp(334): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  DetourPathCorridor.cpp
+  DetourPathQueue.cpp
+  DetourProximityGrid.cpp
+  DetourTileCache.cpp
+  DetourTileCacheBuilder.cpp
+  Recast.cpp
+  RecastAlloc.cpp
+  RecastArea.cpp
+  RecastContour.cpp
+  正在编译...
+  RecastFilter.cpp
+  RecastLayers.cpp
+  RecastMesh.cpp
+  RecastMeshDetail.cpp
+  RecastRasterization.cpp
+  RecastRegion.cpp
     正在创建库 D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.lib 和对象 D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.exp
   正在生成代码
-  All 14 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 598 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
   GameNativeLibrary.vcxproj -> D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.dll
   GameNativeLibrary.vcxproj -> D:\myProject\GameNativeLibrary\project_cpp\GameNativeLibrary\x64\Release\GameNativeLibrary.pdb (Full PDB)
