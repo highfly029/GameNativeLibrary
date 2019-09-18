@@ -8,6 +8,7 @@ CFLAGS = -g -O2 -Wall -msse -msse2 -ffast-math  -mfpmath=sse
 
 RECAST_SRC = ../GameNativeLibrary/GameNativeLibrary.cpp \
 	../GameNativeLibrary/NavMesh.cpp \
+	../GameNativeLibrary/Source/DetourAlloc.cpp \
 	../GameNativeLibrary/Source/DetourCommon.cpp \
 	../GameNativeLibrary/Source/DetourCrowd.cpp \
 	../GameNativeLibrary/Source/DetourLocalBoundary.cpp \
