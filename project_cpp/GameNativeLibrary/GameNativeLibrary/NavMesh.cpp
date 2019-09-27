@@ -205,20 +205,20 @@ bool NavMesh::create_core(uint8* data, size_t flen) {
 
 
 
-		printf("%f %f %f\n", tile->verts[0], tile->verts[1], tile->verts[2]);
+		//printf("%f %f %f\n", tile->verts[0], tile->verts[1], tile->verts[2]);
 
 		for (int m = 0; m < tile->header->detailVertCount; m++) {
-			printf("%f %f %f\n", tile->detailVerts[m * 3 + 0], tile->detailVerts[m * 3 + 1], tile->detailVerts[m * 3 + 2]);
+			//printf("%f %f %f\n", tile->detailVerts[m * 3 + 0], tile->detailVerts[m * 3 + 1], tile->detailVerts[m * 3 + 2]);
 		}
 
 		// DEBUG_MSG(fmt::format("NavMeshHandle::create: verts({}, {}, {})\n", tile->verts[0], tile->verts[1], tile->verts[2]));
 	}
 
-	printf("\t==> tiles loaded: %d\n", tileCount);
-	printf("\t==> BVTree nodes: %d\n", nodeCount);
-	printf("\t==> %d polygons (%d vertices)\n", polyCount, vertCount);
-	printf("\t==> %d triangles (%d vertices)\n", triCount, triVertCount);
-	printf("\t==> %.2f MB of data (not including pointers)\n", (((float)dataSize / sizeof(unsigned char)) / 1048576));
+	//printf("\t==> tiles loaded: %d\n", tileCount);
+	//printf("\t==> BVTree nodes: %d\n", nodeCount);
+	//printf("\t==> %d polygons (%d vertices)\n", polyCount, vertCount);
+	//printf("\t==> %d triangles (%d vertices)\n", triCount, triVertCount);
+	//printf("\t==> %.2f MB of data (not including pointers)\n", (((float)dataSize / sizeof(unsigned char)) / 1048576));
 	return true;
  
 }
