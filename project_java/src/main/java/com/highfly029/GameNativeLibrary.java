@@ -18,34 +18,39 @@ public class GameNativeLibrary {
     static {
         try {
             boolean isWindows = System.getProperty("os.name", "").toLowerCase().contains("windows");
+            boolean isLinux = System.getProperty("os.name").startsWith("Linux");
             String libName = "GameNativeLibrary";
             String suffix = "";
             if (isWindows) {
                 suffix += ".dll";
-            } else {
+            } else if (isLinux) {
                 suffix += ".so";
+            } else {
+
             }
 
-            URL libUrl = Thread.currentThread().getContextClassLoader().getResource(libName + suffix);
-            URLConnection resConn = libUrl.openConnection();
-            resConn.setUseCaches(false);
-            InputStream inputStream = resConn.getInputStream();
-            if (inputStream == null) {
-                System.out.println("cant find GameNativeLibrary.jar");
-            }
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int n;
-            while (-1 != (n = inputStream.read(buffer))) {
-                out.write(buffer, 0, n);
-            }
+            if (!suffix.equals("")) {
+                URL libUrl = Thread.currentThread().getContextClassLoader().getResource(libName + suffix);
+                URLConnection resConn = libUrl.openConnection();
+                resConn.setUseCaches(false);
+                InputStream inputStream = resConn.getInputStream();
+                if (inputStream == null) {
+                    System.out.println("cant find GameNativeLibrary.jar");
+                }
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int n;
+                while (-1 != (n = inputStream.read(buffer))) {
+                    out.write(buffer, 0, n);
+                }
 
-            File f = File.createTempFile(libName, suffix);
-            FileOutputStream fileOutputStream = new FileOutputStream(f);
-            fileOutputStream.write(out.toByteArray());
-            fileOutputStream.close();
-            System.load(f.getAbsolutePath());
-            System.out.println("load GameNativeLibrary.jar success! path="+f.getAbsolutePath());
+                File f = File.createTempFile(libName, suffix);
+                FileOutputStream fileOutputStream = new FileOutputStream(f);
+                fileOutputStream.write(out.toByteArray());
+                fileOutputStream.close();
+                System.load(f.getAbsolutePath());
+                System.out.println("load GameNativeLibrary.jar success! path=" + f.getAbsolutePath());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
