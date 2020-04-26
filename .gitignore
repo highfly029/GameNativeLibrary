@@ -13,3 +13,5 @@ project_cpp/GameNativeLibrary/x64
 *.vcxproj
 project_cpp/GameNativeLibrary/GameNativeLibrary/x64
 project_cpp/GameNativeLibrary/.vs
+
+.DS_Store
