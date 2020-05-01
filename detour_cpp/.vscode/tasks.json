@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Complie",
+        "type": "shell",
+        "command": "clang++",
+        "args": [
+            "-std=c++17",
+            "-stdlib=libc++",
+            "main.cpp",
+            "SoloMesh.cpp",
+            "DetourAlloc.cpp",
+            "DetourAssert.cpp",
+            "DetourCommon.cpp",
+            "DetourNavMesh.cpp",
+            "DetourNavMeshBuilder.cpp",
+            "DetourNavMeshQuery.cpp",
+            "DetourNode.cpp",
+            "DetourTileCache.cpp",
+            "DetourTileCacheBuilder.cpp",
+            "ChunkyTriMesh.cpp",
+            "fastlz.c",
+            "MeshLoaderObj.cpp",
+            "-o",
+            "${fileBasenameNoExtension}",
+            "--debug"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  }
