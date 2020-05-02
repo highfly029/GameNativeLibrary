@@ -451,12 +451,11 @@ void SoloMesh::findPathFollow(float sp[3], float ep[3])
 		if (m_nsmoothPath)
 		{
 			//打印路径点
-			for (int i = 0; i < m_nsmoothPath; )
+			for (int i = 0; i < m_nsmoothPath; ++i)
 			{
-				float x = m_smoothPath[i];
-				float y = m_smoothPath[i + 1] + 0.1f;
-				float z = m_smoothPath[i + 2];
-				i += 3;
+				float x = m_smoothPath[i * 3];
+				float y = m_smoothPath[i * 3 + 1];
+				float z = m_smoothPath[i * 3 + 2];
 				printf("(pos x:%f y:%f z:%f) ", x, y, z);
 			}
 			printf("\n");	
@@ -493,12 +492,11 @@ void SoloMesh::findPathStraight(float sp[3],float ep[3])
 		if (m_nstraightPath)
 		{
 			//打印路径点
-			for (int i = 0; i < m_nstraightPath; )
+			for (int i = 0; i < m_nstraightPath; ++i)
 			{
-				float x = m_smoothPath[i];
-				float y = m_smoothPath[i + 1] + 0.1f;
-				float z = m_smoothPath[i + 2];
-				i += 3;
+				float x = m_straightPath[i * 3];
+				float y = m_straightPath[i * 3 + 1];
+				float z = m_straightPath[i * 3 + 2];
 				printf("(pos x:%f y:%f z:%f) ", x, y, z);
 			}
 			printf("\n");	

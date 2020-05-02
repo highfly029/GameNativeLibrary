@@ -11,11 +11,11 @@ int main(int argc, char* argv[]) {
 	// }
 	float start[3];
 	float end[3];
-	start[0] = -500.0f;
+	start[0] = 1.0f;
 	start[1] = 1.0f;
 	start[2] = 1.0f;
 
-	end[0] = 0.0f;
+	end[0] = 500.0f;
 	end[1] = 1.0f;
 	end[2] = 200.0f;
 	tool.findPathFollow(start, end);
@@ -27,11 +27,11 @@ int main(int argc, char* argv[]) {
 
 	float r1[3];
 	float r2[3];
-	r1[0] = -499.0f;
+	r1[0] = 1.0f;
 	r1[1] = 1.0f;
 	r1[2] = 1.0f;
 
-	r2[0] = -400.0f;
+	r2[0] = 400.0f;
 	r2[1] = 1.0f;
 	r2[2] = 400.0f;
 	tool.raycast(r1, r2);
