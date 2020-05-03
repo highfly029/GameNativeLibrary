@@ -17,3 +17,6 @@ project_cpp/GameNativeLibrary/.vs
 .DS_Store
 
 *.dSYM
+
+build
+CMakeFiles

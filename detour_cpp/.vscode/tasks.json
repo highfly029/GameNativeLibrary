@@ -4,11 +4,12 @@
       {
         "label": "Complie",
         "type": "shell",
-        "command": "clang++",
+        "command": "g++",
         "args": [
             "-std=c++17",
             "-stdlib=libc++",
             "main.cpp",
+            "TempObstacle.cpp",
             "SoloMesh.cpp",
             "DetourAlloc.cpp",
             "DetourAssert.cpp",
@@ -20,11 +21,25 @@
             "DetourTileCache.cpp",
             "DetourTileCacheBuilder.cpp",
             "ChunkyTriMesh.cpp",
-            "fastlz.c",
             "MeshLoaderObj.cpp",
             "-o",
             "${fileBasenameNoExtension}",
+            "fastlz.o",
             "--debug"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "dependsOn":["ComplieC"]
+      },
+      {
+        "label": "ComplieC",
+        "type": "shell",
+        "command": "gcc",
+        "args": [
+            "-c",
+            "fastlz.c",
         ],
         "group": {
           "kind": "build",
