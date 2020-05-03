@@ -10,6 +10,7 @@
 #include "InputGeom.h"
 #include "fastlz.h"
 #include "TempObstacle.h"
+#include "DetourTileCache.h"
 
 static const int TILECACHESET_MAGIC = 'T' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'TSET';
 static const int TILECACHESET_VERSION = 1;
@@ -335,7 +336,11 @@ struct MeshProcess : public dtTileCacheMeshProcess
 
 TempObstacle::~TempObstacle()
 {
-	printf("release TempObstacle\n");
+	if (m_isPrint)
+	{
+		printf("release TempObstacle\n");
+	}
+	
 	dtFreeNavMesh(m_navMesh);
 	dtFreeNavMeshQuery(m_navQuery);
 	m_startRef = 0;
@@ -349,7 +354,11 @@ TempObstacle::~TempObstacle()
 
 TempObstacle::TempObstacle() :m_navMesh(0), m_navQuery(0), m_tileCache(0)
 {
-	printf("new TempObstacle\n");
+	if (m_isPrint)
+	{
+		printf("new TempObstacle\n");	
+	}
+	
 	m_navQuery = dtAllocNavMeshQuery();
 
 	m_filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
@@ -362,6 +371,11 @@ TempObstacle::TempObstacle() :m_navMesh(0), m_navQuery(0), m_tileCache(0)
 	m_talloc = new LinearAllocator(32000);
 	m_tcomp = new FastLZCompressor;
 	m_tmproc = new MeshProcess;
+}
+
+void TempObstacle::setPrint(bool isPrint)
+{
+	m_isPrint = isPrint;
 }
 
 void TempObstacle::LoadMeshFile(const char* file_name){
@@ -467,7 +481,11 @@ void TempObstacle::LoadNavMesh(const char* file_name) {
 }
 
 void TempObstacle::findPathFollow(float sp[3], float ep[3]) {
-	printf("TempObstacle findPathFollow\n");
+	if (m_isPrint)
+	{
+		printf("TempObstacle findPathFollow\n");
+	}
+	
 	for (int i = 0; i < 3; i++) {
 		m_spos[i] = sp[i];
 		m_epos[i] = ep[i];
@@ -615,16 +633,25 @@ void TempObstacle::findPathFollow(float sp[3], float ep[3]) {
 				float x = m_smoothPath[i * 3];
 				float y = m_smoothPath[i * 3 + 1];
 				float z = m_smoothPath[i * 3 + 2];
-				printf("(pos x:%f y:%f z:%f) ", x, y, z);
+				if (m_isPrint)
+				{
+					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
+				}
 			}
-			printf("\n");	
+			if (m_isPrint)
+			{
+				printf("\n");	
+			}	
 		}
 	}
 }
 
 void TempObstacle::findPathStraight(float sp[3],float ep[3])
 {
-	printf("TempObstacle findPathStraight\n");
+	if (m_isPrint)
+	{
+		printf("TempObstacle findPathStraight\n");	
+	}	
 	for (int i = 0; i < 3; i++) 
 	{
 		m_spos[i] = sp[i];
@@ -656,22 +683,27 @@ void TempObstacle::findPathStraight(float sp[3],float ep[3])
 				float x = m_straightPath[i * 3];
 				float y = m_straightPath[i * 3 + 1];
 				float z = m_straightPath[i * 3 + 2];
-				printf("(pos x:%f y:%f z:%f) ", x, y, z);
+				if (m_isPrint)
+				{
+					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
+				}
 			}
-			printf("\n");	
+			if (m_isPrint)
+			{
+				printf("\n");	
+			}
 		}							
 	}
 }
 
 void TempObstacle::findPathSliced(float sp[3],float ep[3])
 {
-	printf("TempObstacle findPathSliced\n");
+	printf("TempObstacle findPathSliced not support!\n");
 }
 
 bool TempObstacle::raycast(float sp[3],float ep[3])
 {
 	bool result = false;
-	printf("raycast\n");
 	for (int i = 0; i < 3; i++) 
 	{
 		m_spos[i] = sp[i];
@@ -707,49 +739,133 @@ bool TempObstacle::raycast(float sp[3],float ep[3])
 	{
 		
 	}
-	printf("raycast hit=%d, hitX=%f,hitY=%f,hitZ=%f\n", result, m_hitPos[0], m_hitPos[1], m_hitPos[2]);
+	if (m_isPrint)
+	{
+		printf("raycast hit=%d, hitX=%f,hitY=%f,hitZ=%f\n", result, m_hitPos[0], m_hitPos[1], m_hitPos[2]);	
+	}
 	return result;
 }
 
-void TempObstacle::update() {
-	printf("TempObstacle update\n");
+void TempObstacle::update() 
+{
 	if (!m_navMesh)
 		return;
 	if (!m_tileCache)
 		return;
 
-	int update_times = 10;//不在帧中做update,这里直接饱和更新
-	while (update_times--) {
-		m_tileCache->update(0.1f, m_navMesh);
+	int update_times = 1;//不在帧中做update,这里直接饱和更新
+	bool isUpdateToDate;
+	m_tileCache->update(0.1f, m_navMesh, &isUpdateToDate);
+
+	while (!isUpdateToDate) {
+		m_tileCache->update(0.1f, m_navMesh, &isUpdateToDate);
+		update_times++;
+	}
+	if (m_isPrint)
+	{
+		printf("TempObstacle update times=%d \n", update_times);	
 	}
 }
 
-void TempObstacle::addObstacle(float *p) {
-	printf("TempObstacle addObstacle\n");
-	m_tileCache->addObstacle(p, 1.0f, 2.0f, 0);
+int TempObstacle::addObstacle(float *p, float radius, float height) 
+{
+	if (m_isPrint)
+	{
+		printf("TempObstacle addObstacle\n");		
+	}
+	
+	if (!m_tileCache) {
+		return -1;
+	}
+	dtObstacleRef ref;
+	dtStatus status = m_tileCache->addObstacle(p, radius, height, &ref);
+	if (status != DT_SUCCESS)
+	{
+		return -1;
+	}
+	
+	unsigned int idx = m_tileCache->decodeObstacleIdObstacle(ref);
+	return idx;
 }
 
-void TempObstacle::removeOneObstacle(int idx) {
-	printf("TempObstacle removeOneObstacle\n");
+int TempObstacle::addBoxObstacle(float* bmin, float* bmax)
+{
+	if (m_isPrint)
+	{
+		printf("TempObstacle addBoxObstacle AABB\n");	
+	}	
 	if (!m_tileCache) {
-		return;
+		return -1;
+	}
+	dtObstacleRef ref;
+	dtStatus status = m_tileCache->addBoxObstacle(bmin, bmax, &ref);
+	if (status != DT_SUCCESS)
+	{
+		return -1;
+	}
+	
+	unsigned int idx = m_tileCache->decodeObstacleIdObstacle(ref);
+	return idx;
+}
+
+int TempObstacle::addBoxObstacle(float* center, float* halfExtents, float yRadians)
+{
+	if (m_isPrint)
+	{
+		printf("TempObstacle addBoxObstacle OBB\n");
+	}
+	
+	if (!m_tileCache) {
+		return -1;
+	}
+	dtObstacleRef ref;
+	dtStatus status = m_tileCache->addBoxObstacle(center, halfExtents, yRadians, &ref);
+	if (status != DT_SUCCESS)
+	{
+		return -1;
+	}
+	
+	unsigned int idx = m_tileCache->decodeObstacleIdObstacle(ref);
+	return idx;	
+}
+
+bool TempObstacle::removeOneObstacle(int idx) 
+{
+	if (m_isPrint)
+	{
+		printf("TempObstacle removeOneObstacle\n");		
+	}
+	if (!m_tileCache) {
+		return false;
 	}
 
 	if (idx >= m_tileCache->getObstacleCount()) {
 		printf("Too Large Idx!\n");
-		return;
+		return false;
 	}
 
 	const dtTileCacheObstacle* ob = m_tileCache->getObstacle(idx);
 	if (ob->state == DT_OBSTACLE_EMPTY) {
-		return;
+		return false;
 	}
 
-	m_tileCache->removeObstacle(m_tileCache->getObstacleRef(ob));
+	dtStatus status = m_tileCache->removeObstacle(m_tileCache->getObstacleRef(ob));
+	if (status != DT_SUCCESS)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
-void TempObstacle::removeAllObstacle() {
-	printf("TempObstacle removeAllObstacle\n");
+void TempObstacle::removeAllObstacle() 
+{
+	if (m_isPrint)
+	{
+		printf("TempObstacle removeAllObstacle\n");
+	}
 	if (!m_tileCache)
 		return;
 	for (int i = 0; i < m_tileCache->getObstacleCount(); ++i)

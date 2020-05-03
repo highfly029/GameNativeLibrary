@@ -32,11 +32,14 @@ class SoloMesh
 	int m_straightPathOptions;
 
 	float m_hitPos[3];
+
+	bool m_isPrint;
 	
 public:
 	SoloMesh();
 	virtual ~SoloMesh();
 
+	void setPrint(bool isPrint);
 	dtNavMesh* LoadMeshFile(const char* file_name);
 	void LoadNavMesh(const char* file_name);
 	void findPathFollow(float sp[3],float ep[3]);

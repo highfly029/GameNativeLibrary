@@ -199,7 +199,10 @@ static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery)
 
 SoloMesh::~SoloMesh()
 {
-	printf("release SoloMesh\n");
+	if (m_isPrint)
+	{
+		printf("release SoloMesh\n");
+	}
 	dtFreeNavMesh(m_navMesh);
 	dtFreeNavMeshQuery(m_navQuery);
 	m_startRef = 0;
@@ -211,7 +214,10 @@ SoloMesh::~SoloMesh()
 
 SoloMesh::SoloMesh() :m_navMesh(0), m_navQuery(0)
 {
-	printf("new SoloMesh\n");
+	if (m_isPrint)
+	{
+		printf("new SoloMesh\n");	
+	}
 	m_navQuery = dtAllocNavMeshQuery();
 
 	m_filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
@@ -220,6 +226,11 @@ SoloMesh::SoloMesh() :m_navMesh(0), m_navQuery(0)
 	m_polyPickExt[0] = 2;
 	m_polyPickExt[1] = 4;
 	m_polyPickExt[2] = 2;
+}
+
+void SoloMesh::setPrint(bool isPrint)
+{
+	m_isPrint = isPrint;
 }
 
 dtNavMesh* SoloMesh::LoadMeshFile(const char* file_name)
@@ -306,7 +317,10 @@ void SoloMesh::LoadNavMesh(const char* file_name)
 
 void SoloMesh::findPathFollow(float sp[3], float ep[3]) 
 {
-	printf("findPathFollow\n");
+	if (m_isPrint)
+	{
+		printf("findPathFollow\n");
+	}	
 	for (int i = 0; i < 3; i++) 
 	{
 		m_spos[i] = sp[i];
@@ -456,16 +470,26 @@ void SoloMesh::findPathFollow(float sp[3], float ep[3])
 				float x = m_smoothPath[i * 3];
 				float y = m_smoothPath[i * 3 + 1];
 				float z = m_smoothPath[i * 3 + 2];
-				printf("(pos x:%f y:%f z:%f) ", x, y, z);
+				if (m_isPrint)
+				{
+					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
+				}
+				
 			}
-			printf("\n");	
+			if (m_isPrint)
+			{
+				printf("\n");
+			}
 		}
 	}
 }
 
 void SoloMesh::findPathStraight(float sp[3],float ep[3]) 
 {
-	printf("findPathStraight\n");
+	if (m_isPrint)
+	{
+		printf("SoloMesh findPathStraight\n");	
+	}
 	for (int i = 0; i < 3; i++) 
 	{
 		m_spos[i] = sp[i];
@@ -497,22 +521,27 @@ void SoloMesh::findPathStraight(float sp[3],float ep[3])
 				float x = m_straightPath[i * 3];
 				float y = m_straightPath[i * 3 + 1];
 				float z = m_straightPath[i * 3 + 2];
-				printf("(pos x:%f y:%f z:%f) ", x, y, z);
+				if (m_isPrint)
+				{
+					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
+				}
 			}
-			printf("\n");	
+			if (m_isPrint)
+			{
+				printf("\n");	
+			}
 		}							
 	}
 }
 
 void SoloMesh::findPathSliced(float sp[3],float ep[3]) 
 {
-	printf("findPathSliced\n");			
+	printf("SoloMesh findPathSliced not support!\n");			
 }
 
 bool SoloMesh::raycast(float sp[3],float ep[3])
 {
 	bool result = false;
-	printf("raycast\n");
 	for (int i = 0; i < 3; i++) 
 	{
 		m_spos[i] = sp[i];
@@ -548,6 +577,9 @@ bool SoloMesh::raycast(float sp[3],float ep[3])
 	{
 		
 	}
-	printf("raycast hit=%d, hitX=%f,hitY=%f,hitZ=%f\n", result, m_hitPos[0], m_hitPos[1], m_hitPos[2]);
+	if (m_isPrint)
+	{
+		printf("raycast hit=%d, hitX=%f,hitY=%f,hitZ=%f\n", result, m_hitPos[0], m_hitPos[1], m_hitPos[2]);
+	}
 	return result;
 }

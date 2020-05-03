@@ -38,6 +38,8 @@ class TempObstacle
 
 	float m_hitPos[3];
 
+	bool m_isPrint;
+
 ///////////TmpObstacle///////////
 	struct LinearAllocator* m_talloc;
 	struct FastLZCompressor* m_tcomp;
@@ -49,6 +51,7 @@ public:
 	TempObstacle();
 	virtual ~TempObstacle();
 
+	void setPrint(bool isPrint);
 	void LoadMeshFile(const char* file_name);
 	void LoadNavMesh(const char* file_name);
 	void findPathFollow(float sp[3],float ep[3]);
@@ -57,7 +60,9 @@ public:
 	bool raycast(float sp[3],float ep[3]);
 
 	void update();
-	void addObstacle(float *p);
-	void removeOneObstacle(int idx);
+	int addObstacle(float *p, float radius, float height);
+	int addBoxObstacle(float* bmin, float* bmax);
+	int addBoxObstacle(float* center, float* halfExtents, float yRadians);
+	bool removeOneObstacle(int idx);
 	void removeAllObstacle();
 };
