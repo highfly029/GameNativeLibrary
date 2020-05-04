@@ -238,7 +238,13 @@ void SoloMesh::setPrint(bool isPrint)
 dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 {
 	FILE* fp = fopen(file_name, "rb");
-	if (!fp) return 0;
+	printf("loadMeshFile %s\n", file_name);
+	if (!fp)
+	{
+		printf("loadMeshFile file cant open %s!\n", file_name);
+		return 0;
+	}
+	
 
 	// Read header.
 	NavMeshSetHeader header;
@@ -246,16 +252,19 @@ dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 	if (readLen != 1)
 	{
 		fclose(fp);
+		printf("loadMeshFile fread failed!\n");
 		return 0;
 	}
 	if (header.magic != NAVMESHSET_MAGIC)
 	{
 		fclose(fp);
+		printf("loadMeshFile magic failed!\n");
 		return 0;
 	}
 	if (header.version != NAVMESHSET_VERSION)
 	{
 		fclose(fp);
+		printf("loadMeshFile version failed!\n");
 		return 0;
 	}
 
@@ -263,12 +272,14 @@ dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 	if (!mesh)
 	{
 		fclose(fp);
+		printf("loadMeshFile mesh is null!\n");
 		return 0;
 	}
 	dtStatus status = mesh->init(&header.params);
 	if (dtStatusFailed(status))
 	{
 		fclose(fp);
+		printf("loadMeshFile mesh init failed!\n");
 		return 0;
 	}
 
@@ -280,6 +291,7 @@ dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 		if (readLen != 1)
 		{
 			fclose(fp);
+			printf("loadMeshFile Read tiles failed!\n");
 			return 0;
 		}
 
@@ -294,6 +306,7 @@ dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 		{
 			dtFree(data);
 			fclose(fp);
+			printf("loadMeshFile Read tiles failed!\n");
 			return 0;
 		}
 

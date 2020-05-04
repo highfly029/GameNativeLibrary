@@ -1,11 +1,40 @@
-#include <iostream>
 #include "SoloMesh.h"
 #include "TempObstacle.h"
+#include <map>
+#include <string>
+using namespace std;
 
 void testSolo() {
-	SoloMesh tool;
-	tool.setPrint(true);
-	tool.loadNavMesh("solo_navmesh.bin");
+	map<string, SoloMesh*> soloMeshMap;
+	SoloMesh* tool = new SoloMesh();
+	string name = "abc";
+	// map<string, SoloMesh*>::iterator iter; 
+	if (soloMeshMap.find(name) != soloMeshMap.end())
+	{
+		printf("map 存在 abc\n");
+		return;
+	} else
+	{
+		printf("map 不存在 abc\n");
+		soloMeshMap[name] = tool;
+	}
+
+	SoloMesh* tool2 = soloMeshMap.find(name)->second;
+
+	if (tool2)
+	{
+		printf("abc 插入成功\n");
+	}
+	if (tool == tool2)
+	{
+		printf("abc 完全相等\n");
+	}
+	
+	
+	
+	
+	tool->setPrint(true);
+	tool->loadNavMesh("/Users/highfly029/Documents/project/GameNativeLibrary/project_java/target/classes/solo_navmesh.bin");
 	printf("hello SoloMesh!\n");
 	float start[3];
 	float end[3];
@@ -19,7 +48,7 @@ void testSolo() {
 	// tool.findPathFollow(start, end);
 
 	std::vector<Vector3D> outPaths;
-	tool.findPathStraight(start, end, outPaths);
+	tool->findPathStraight(start, end, outPaths);
 	std::vector<Vector3D>::iterator iter = outPaths.begin();
 	printf("output begin\n");
 	for (; iter != outPaths.end(); ++iter)
@@ -41,7 +70,7 @@ void testSolo() {
 	r2[1] = 1.0f;
 	r2[2] = 400.0f;
 	float hitPoint[3];
-	tool.raycast(r1, r2, hitPoint);
+	tool->raycast(r1, r2, hitPoint);
 	printf("hitPoint x=%f,y=%f,z=%f", hitPoint[0], hitPoint[1], hitPoint[2]);
 }
 

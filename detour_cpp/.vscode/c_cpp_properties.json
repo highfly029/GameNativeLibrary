@@ -3,7 +3,9 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${env.JAVA_HOME}/include",
+                "${env.JAVA_HOME}/include/darwin"
             ],
             "defines": [],
             "macFrameworkPath": [

@@ -205,3 +205,4 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_release
 	}
 	return 0;
 }
+
