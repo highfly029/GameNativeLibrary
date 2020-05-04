@@ -5,7 +5,7 @@
 void testSolo() {
 	SoloMesh tool;
 	tool.setPrint(true);
-	tool.LoadNavMesh("solo_navmesh.bin");
+	tool.loadNavMesh("solo_navmesh.bin");
 	printf("hello SoloMesh!\n");
 	float start[3];
 	float end[3];
@@ -18,7 +18,18 @@ void testSolo() {
 	end[2] = 200.0f;
 	// tool.findPathFollow(start, end);
 
-	tool.findPathStraight(start, end);
+	std::vector<Vector3D> outPaths;
+	tool.findPathStraight(start, end, outPaths);
+	std::vector<Vector3D>::iterator iter = outPaths.begin();
+	printf("output begin\n");
+	for (; iter != outPaths.end(); ++iter)
+	{
+		float x = iter->x;
+		float y = iter->y;
+		float z = iter->z;
+		printf("(pos x:%f y:%f z:%f) ", x, y, z);	
+	}
+	printf("\noutput end\n");
 
 	float r1[3];
 	float r2[3];
@@ -29,7 +40,9 @@ void testSolo() {
 	r2[0] = -200.0f;
 	r2[1] = 1.0f;
 	r2[2] = 400.0f;
-	tool.raycast(r1, r2);
+	float hitPoint[3];
+	tool.raycast(r1, r2, hitPoint);
+	printf("hitPoint x=%f,y=%f,z=%f", hitPoint[0], hitPoint[1], hitPoint[2]);
 }
 
 void testTempObstacle() {
@@ -75,7 +88,7 @@ void testTempObstacle() {
 	float boxMax[3];
 	float width = 14.0f;
 	float length = 14.0f;
-	int len = 130;
+	int len = 260;
 	int array[len];
 	for (int i = 0; i < len; i++)
 	{
@@ -103,14 +116,33 @@ void testTempObstacle() {
 		bool isHit = tool.raycast(r1, r2);
 		printf("test remove i=%d, idx=%d, result=%d, isHit=%d\n", i, idx, result, isHit);
 	}
-	
 
+	// boxMin[0] = -50.0f;
+	// boxMin[1] = 0.0f;
+	// boxMin[2] = 340.0f;
+	// for (int i = 0; i < len; i++)
+	// {
+	// 	boxMax[0] = boxMin[0] + length;
+	// 	boxMax[1] = boxMin[1] + 10;
+	// 	boxMax[2] = boxMin[2] + width;
+	// 	int idx = tool.addBoxObstacle(boxMin, boxMax);
+	// 	array[i] = idx;
+	// 	tool.update();
+	// 	bool isHit = tool.raycast(r1, r2);
+	// 	printf("test add i=%d, idx=%d, isHit=%d,minX=%.3f,minZ=%.3f,maxX=%.3f,maxZ=%.3f\n", i, idx, isHit,
+	// 	boxMin[0], boxMin[2], boxMax[0], boxMax[2]);
+
+	// 	boxMin[0] = boxMax[0];
+	// 	boxMin[1] = boxMax[1];
+	// 	boxMin[2] = boxMax[2];
+	// }
 
 	//删除全部动态阻挡
+	// tool.setPrint(true);
 	// tool.removeAllObstacle();
 	// tool.update();
 	// tool.raycast(r1, r2);
-	tool.setPrint(true);
+	
 }
 
 int main(int argc, char* argv[]) {

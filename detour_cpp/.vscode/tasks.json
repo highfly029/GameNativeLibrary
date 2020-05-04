@@ -4,7 +4,7 @@
       {
         "label": "Complie",
         "type": "shell",
-        "command": "g++",
+        "command": "clang++",
         "args": [
             "-std=c++17",
             "-stdlib=libc++",
@@ -36,7 +36,7 @@
       {
         "label": "ComplieC",
         "type": "shell",
-        "command": "gcc",
+        "command": "clang",
         "args": [
             "-c",
             "fastlz.c",

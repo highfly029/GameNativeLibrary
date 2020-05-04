@@ -1,9 +1,13 @@
+#pragma once
+
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
 #include "DetourNavMesh.h"
 #include "DetourNavMeshQuery.h"
 #include "DetourCommon.h"
+#include "common.h"
+#include <vector>
 
 class SoloMesh
 {
@@ -40,11 +44,11 @@ public:
 	virtual ~SoloMesh();
 
 	void setPrint(bool isPrint);
-	dtNavMesh* LoadMeshFile(const char* file_name);
-	void LoadNavMesh(const char* file_name);
-	void findPathFollow(float sp[3],float ep[3]);
-	void findPathStraight(float sp[3],float ep[3]);
-	void findPathSliced(float sp[3],float ep[3]);
+	dtNavMesh* loadMeshFile(const char* file_name);
+	bool loadNavMesh(const char* file_name);
+	int findPathFollow(float sp[3], float ep[3], std::vector<Vector3D>& paths);
+	int findPathStraight(float sp[3], float ep[3], std::vector<Vector3D>& paths);
+	int findPathSliced(float sp[3], float ep[3], std::vector<Vector3D>& paths);
 
-	bool raycast(float sp[3],float ep[3]);
+	bool raycast(float sp[3], float ep[3], float* hitPoint);
 };

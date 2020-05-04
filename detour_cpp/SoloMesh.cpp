@@ -5,6 +5,8 @@
 #include "DetourNavMeshQuery.h"
 #include "DetourCommon.h"
 #include "SoloMesh.h"
+#include "common.h"
+#include <vector>
 
 static const int NAVMESHSET_MAGIC = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'MSET';
 static const int NAVMESHSET_VERSION = 1;
@@ -233,7 +235,7 @@ void SoloMesh::setPrint(bool isPrint)
 	m_isPrint = isPrint;
 }
 
-dtNavMesh* SoloMesh::LoadMeshFile(const char* file_name)
+dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 {
 	FILE* fp = fopen(file_name, "rb");
 	if (!fp) return 0;
@@ -303,19 +305,31 @@ dtNavMesh* SoloMesh::LoadMeshFile(const char* file_name)
 	return mesh;
 }
 
-void SoloMesh::LoadNavMesh(const char* file_name) 
+bool SoloMesh::loadNavMesh(const char* file_name) 
 {
 	if (!file_name) {
-		printf("Error File Name!\n");
-		return;
+		printf("loadNavMesh error fileName!\n");
+		return false;
 	}
 
 	dtFreeNavMesh(m_navMesh);
-	m_navMesh = LoadMeshFile(file_name);
-	m_navQuery->init(m_navMesh, 2048);
+	m_navMesh = loadMeshFile(file_name);
+	if (!m_navMesh)
+	{
+		printf("loadMeshFile failed!\n");
+		return false;
+	}
+	
+	dtStatus status = m_navQuery->init(m_navMesh, 2048);
+	if (dtStatusSucceed(status))
+	{
+		return true;
+	} else {
+		return false;
+	}
 }
 
-void SoloMesh::findPathFollow(float sp[3], float ep[3]) 
+int SoloMesh::findPathFollow(float sp[3], float ep[3], std::vector<Vector3D>& paths) 
 {
 	if (m_isPrint)
 	{
@@ -329,6 +343,16 @@ void SoloMesh::findPathFollow(float sp[3], float ep[3])
 
 	m_navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
 	m_navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
+
+	if (!m_startRef)
+	{
+		return START_REF_NULL;
+	}
+	if (!m_endRef)
+	{
+		return END_REF_NULL;
+	}
+	
 
 	m_navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
 
@@ -464,27 +488,36 @@ void SoloMesh::findPathFollow(float sp[3], float ep[3])
 
 		if (m_nsmoothPath)
 		{
+			int num = 0;
+			Vector3D vector3D;
 			//打印路径点
 			for (int i = 0; i < m_nsmoothPath; ++i)
 			{
 				float x = m_smoothPath[i * 3];
 				float y = m_smoothPath[i * 3 + 1];
 				float z = m_smoothPath[i * 3 + 2];
+
+				vector3D.x = x;
+				vector3D.y = y;
+				vector3D.z = z;
+				paths.push_back(vector3D);
 				if (m_isPrint)
 				{
 					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
 				}
-				
+				num++;
 			}
 			if (m_isPrint)
 			{
 				printf("\n");
 			}
+			return num;
 		}
 	}
+	return UNKNOWN_FAIL;
 }
 
-void SoloMesh::findPathStraight(float sp[3],float ep[3]) 
+int SoloMesh::findPathStraight(float sp[3],float ep[3], std::vector<Vector3D>& paths) 
 {
 	if (m_isPrint)
 	{
@@ -498,6 +531,15 @@ void SoloMesh::findPathStraight(float sp[3],float ep[3])
 
 	m_navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
 	m_navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
+
+	if (!m_startRef)
+	{
+		return START_REF_NULL;
+	}
+	if (!m_endRef)
+	{
+		return END_REF_NULL;
+	}
 
 	m_navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
 	m_nstraightPath = 0;
@@ -515,31 +557,41 @@ void SoloMesh::findPathStraight(float sp[3],float ep[3])
 
 		if (m_nstraightPath)
 		{
+			int num = 0;
+			Vector3D vector3D;
 			//打印路径点
 			for (int i = 0; i < m_nstraightPath; ++i)
 			{
 				float x = m_straightPath[i * 3];
 				float y = m_straightPath[i * 3 + 1];
 				float z = m_straightPath[i * 3 + 2];
+				vector3D.x = x;
+				vector3D.y = y;
+				vector3D.z = z;
+				paths.push_back(vector3D);
 				if (m_isPrint)
 				{
 					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
 				}
+				num++;
 			}
 			if (m_isPrint)
 			{
 				printf("\n");	
 			}
+			return num;
 		}							
 	}
+	return UNKNOWN_FAIL;
 }
 
-void SoloMesh::findPathSliced(float sp[3],float ep[3]) 
+int SoloMesh::findPathSliced(float sp[3],float ep[3], std::vector<Vector3D>& paths) 
 {
-	printf("SoloMesh findPathSliced not support!\n");			
+	printf("SoloMesh findPathSliced not support!\n");
+	return UN_SUPPORT;			
 }
 
-bool SoloMesh::raycast(float sp[3],float ep[3])
+bool SoloMesh::raycast(float sp[3], float ep[3], float* hitPoint)
 {
 	bool result = false;
 	for (int i = 0; i < 3; i++) 
@@ -573,9 +625,11 @@ bool SoloMesh::raycast(float sp[3],float ep[3])
 		m_navQuery->getPolyHeight(m_polys[m_npolys-1], m_hitPos, &h);
 		m_hitPos[1] = h;
 	}
-	if (result)
+	if (result && hitPoint)
 	{
-		
+		hitPoint[0] = m_hitPos[0];
+		hitPoint[1] = m_hitPos[1];
+		hitPoint[2] = m_hitPos[2];
 	}
 	if (m_isPrint)
 	{

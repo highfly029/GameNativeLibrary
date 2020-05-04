@@ -131,242 +131,422 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named main
+# Target rules for targets named recast
 
 # Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main
-.PHONY : main
+recast: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 recast
+.PHONY : recast
 
 # fast build rule for target.
-main/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-.PHONY : main/fast
+recast/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/build
+.PHONY : recast/fast
 
-# target to build an object file
-ChunkyTriMesh.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/ChunkyTriMesh.o
+ChunkyTriMesh.o: ChunkyTriMesh.cpp.o
+
 .PHONY : ChunkyTriMesh.o
 
-# target to preprocess a source file
-ChunkyTriMesh.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/ChunkyTriMesh.i
+# target to build an object file
+ChunkyTriMesh.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/ChunkyTriMesh.cpp.o
+.PHONY : ChunkyTriMesh.cpp.o
+
+ChunkyTriMesh.i: ChunkyTriMesh.cpp.i
+
 .PHONY : ChunkyTriMesh.i
 
-# target to generate assembly for a file
-ChunkyTriMesh.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/ChunkyTriMesh.s
+# target to preprocess a source file
+ChunkyTriMesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/ChunkyTriMesh.cpp.i
+.PHONY : ChunkyTriMesh.cpp.i
+
+ChunkyTriMesh.s: ChunkyTriMesh.cpp.s
+
 .PHONY : ChunkyTriMesh.s
 
-# target to build an object file
-DetourAlloc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourAlloc.o
+# target to generate assembly for a file
+ChunkyTriMesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/ChunkyTriMesh.cpp.s
+.PHONY : ChunkyTriMesh.cpp.s
+
+DetourAlloc.o: DetourAlloc.cpp.o
+
 .PHONY : DetourAlloc.o
 
-# target to preprocess a source file
-DetourAlloc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourAlloc.i
+# target to build an object file
+DetourAlloc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourAlloc.cpp.o
+.PHONY : DetourAlloc.cpp.o
+
+DetourAlloc.i: DetourAlloc.cpp.i
+
 .PHONY : DetourAlloc.i
 
-# target to generate assembly for a file
-DetourAlloc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourAlloc.s
+# target to preprocess a source file
+DetourAlloc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourAlloc.cpp.i
+.PHONY : DetourAlloc.cpp.i
+
+DetourAlloc.s: DetourAlloc.cpp.s
+
 .PHONY : DetourAlloc.s
 
-# target to build an object file
-DetourAssert.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourAssert.o
+# target to generate assembly for a file
+DetourAlloc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourAlloc.cpp.s
+.PHONY : DetourAlloc.cpp.s
+
+DetourAssert.o: DetourAssert.cpp.o
+
 .PHONY : DetourAssert.o
 
-# target to preprocess a source file
-DetourAssert.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourAssert.i
+# target to build an object file
+DetourAssert.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourAssert.cpp.o
+.PHONY : DetourAssert.cpp.o
+
+DetourAssert.i: DetourAssert.cpp.i
+
 .PHONY : DetourAssert.i
 
-# target to generate assembly for a file
-DetourAssert.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourAssert.s
+# target to preprocess a source file
+DetourAssert.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourAssert.cpp.i
+.PHONY : DetourAssert.cpp.i
+
+DetourAssert.s: DetourAssert.cpp.s
+
 .PHONY : DetourAssert.s
 
-# target to build an object file
-DetourCommon.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourCommon.o
+# target to generate assembly for a file
+DetourAssert.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourAssert.cpp.s
+.PHONY : DetourAssert.cpp.s
+
+DetourCommon.o: DetourCommon.cpp.o
+
 .PHONY : DetourCommon.o
 
-# target to preprocess a source file
-DetourCommon.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourCommon.i
+# target to build an object file
+DetourCommon.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourCommon.cpp.o
+.PHONY : DetourCommon.cpp.o
+
+DetourCommon.i: DetourCommon.cpp.i
+
 .PHONY : DetourCommon.i
 
-# target to generate assembly for a file
-DetourCommon.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourCommon.s
+# target to preprocess a source file
+DetourCommon.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourCommon.cpp.i
+.PHONY : DetourCommon.cpp.i
+
+DetourCommon.s: DetourCommon.cpp.s
+
 .PHONY : DetourCommon.s
 
-# target to build an object file
-DetourNavMesh.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMesh.o
+# target to generate assembly for a file
+DetourCommon.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourCommon.cpp.s
+.PHONY : DetourCommon.cpp.s
+
+DetourNavMesh.o: DetourNavMesh.cpp.o
+
 .PHONY : DetourNavMesh.o
 
-# target to preprocess a source file
-DetourNavMesh.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMesh.i
+# target to build an object file
+DetourNavMesh.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMesh.cpp.o
+.PHONY : DetourNavMesh.cpp.o
+
+DetourNavMesh.i: DetourNavMesh.cpp.i
+
 .PHONY : DetourNavMesh.i
 
-# target to generate assembly for a file
-DetourNavMesh.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMesh.s
+# target to preprocess a source file
+DetourNavMesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMesh.cpp.i
+.PHONY : DetourNavMesh.cpp.i
+
+DetourNavMesh.s: DetourNavMesh.cpp.s
+
 .PHONY : DetourNavMesh.s
 
-# target to build an object file
-DetourNavMeshBuilder.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMeshBuilder.o
+# target to generate assembly for a file
+DetourNavMesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMesh.cpp.s
+.PHONY : DetourNavMesh.cpp.s
+
+DetourNavMeshBuilder.o: DetourNavMeshBuilder.cpp.o
+
 .PHONY : DetourNavMeshBuilder.o
 
-# target to preprocess a source file
-DetourNavMeshBuilder.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMeshBuilder.i
+# target to build an object file
+DetourNavMeshBuilder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMeshBuilder.cpp.o
+.PHONY : DetourNavMeshBuilder.cpp.o
+
+DetourNavMeshBuilder.i: DetourNavMeshBuilder.cpp.i
+
 .PHONY : DetourNavMeshBuilder.i
 
-# target to generate assembly for a file
-DetourNavMeshBuilder.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMeshBuilder.s
+# target to preprocess a source file
+DetourNavMeshBuilder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMeshBuilder.cpp.i
+.PHONY : DetourNavMeshBuilder.cpp.i
+
+DetourNavMeshBuilder.s: DetourNavMeshBuilder.cpp.s
+
 .PHONY : DetourNavMeshBuilder.s
 
-# target to build an object file
-DetourNavMeshQuery.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMeshQuery.o
+# target to generate assembly for a file
+DetourNavMeshBuilder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMeshBuilder.cpp.s
+.PHONY : DetourNavMeshBuilder.cpp.s
+
+DetourNavMeshQuery.o: DetourNavMeshQuery.cpp.o
+
 .PHONY : DetourNavMeshQuery.o
 
-# target to preprocess a source file
-DetourNavMeshQuery.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMeshQuery.i
+# target to build an object file
+DetourNavMeshQuery.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMeshQuery.cpp.o
+.PHONY : DetourNavMeshQuery.cpp.o
+
+DetourNavMeshQuery.i: DetourNavMeshQuery.cpp.i
+
 .PHONY : DetourNavMeshQuery.i
 
-# target to generate assembly for a file
-DetourNavMeshQuery.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNavMeshQuery.s
+# target to preprocess a source file
+DetourNavMeshQuery.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMeshQuery.cpp.i
+.PHONY : DetourNavMeshQuery.cpp.i
+
+DetourNavMeshQuery.s: DetourNavMeshQuery.cpp.s
+
 .PHONY : DetourNavMeshQuery.s
 
-# target to build an object file
-DetourNode.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNode.o
+# target to generate assembly for a file
+DetourNavMeshQuery.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNavMeshQuery.cpp.s
+.PHONY : DetourNavMeshQuery.cpp.s
+
+DetourNode.o: DetourNode.cpp.o
+
 .PHONY : DetourNode.o
 
-# target to preprocess a source file
-DetourNode.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNode.i
+# target to build an object file
+DetourNode.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNode.cpp.o
+.PHONY : DetourNode.cpp.o
+
+DetourNode.i: DetourNode.cpp.i
+
 .PHONY : DetourNode.i
 
-# target to generate assembly for a file
-DetourNode.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourNode.s
+# target to preprocess a source file
+DetourNode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNode.cpp.i
+.PHONY : DetourNode.cpp.i
+
+DetourNode.s: DetourNode.cpp.s
+
 .PHONY : DetourNode.s
 
-# target to build an object file
-DetourTileCache.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourTileCache.o
+# target to generate assembly for a file
+DetourNode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourNode.cpp.s
+.PHONY : DetourNode.cpp.s
+
+DetourTileCache.o: DetourTileCache.cpp.o
+
 .PHONY : DetourTileCache.o
 
-# target to preprocess a source file
-DetourTileCache.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourTileCache.i
+# target to build an object file
+DetourTileCache.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourTileCache.cpp.o
+.PHONY : DetourTileCache.cpp.o
+
+DetourTileCache.i: DetourTileCache.cpp.i
+
 .PHONY : DetourTileCache.i
 
-# target to generate assembly for a file
-DetourTileCache.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourTileCache.s
+# target to preprocess a source file
+DetourTileCache.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourTileCache.cpp.i
+.PHONY : DetourTileCache.cpp.i
+
+DetourTileCache.s: DetourTileCache.cpp.s
+
 .PHONY : DetourTileCache.s
 
-# target to build an object file
-DetourTileCacheBuilder.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourTileCacheBuilder.o
+# target to generate assembly for a file
+DetourTileCache.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourTileCache.cpp.s
+.PHONY : DetourTileCache.cpp.s
+
+DetourTileCacheBuilder.o: DetourTileCacheBuilder.cpp.o
+
 .PHONY : DetourTileCacheBuilder.o
 
-# target to preprocess a source file
-DetourTileCacheBuilder.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourTileCacheBuilder.i
+# target to build an object file
+DetourTileCacheBuilder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourTileCacheBuilder.cpp.o
+.PHONY : DetourTileCacheBuilder.cpp.o
+
+DetourTileCacheBuilder.i: DetourTileCacheBuilder.cpp.i
+
 .PHONY : DetourTileCacheBuilder.i
 
-# target to generate assembly for a file
-DetourTileCacheBuilder.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetourTileCacheBuilder.s
+# target to preprocess a source file
+DetourTileCacheBuilder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourTileCacheBuilder.cpp.i
+.PHONY : DetourTileCacheBuilder.cpp.i
+
+DetourTileCacheBuilder.s: DetourTileCacheBuilder.cpp.s
+
 .PHONY : DetourTileCacheBuilder.s
 
-# target to build an object file
-MeshLoaderObj.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/MeshLoaderObj.o
+# target to generate assembly for a file
+DetourTileCacheBuilder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/DetourTileCacheBuilder.cpp.s
+.PHONY : DetourTileCacheBuilder.cpp.s
+
+MeshLoaderObj.o: MeshLoaderObj.cpp.o
+
 .PHONY : MeshLoaderObj.o
 
-# target to preprocess a source file
-MeshLoaderObj.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/MeshLoaderObj.i
+# target to build an object file
+MeshLoaderObj.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/MeshLoaderObj.cpp.o
+.PHONY : MeshLoaderObj.cpp.o
+
+MeshLoaderObj.i: MeshLoaderObj.cpp.i
+
 .PHONY : MeshLoaderObj.i
 
-# target to generate assembly for a file
-MeshLoaderObj.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/MeshLoaderObj.s
+# target to preprocess a source file
+MeshLoaderObj.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/MeshLoaderObj.cpp.i
+.PHONY : MeshLoaderObj.cpp.i
+
+MeshLoaderObj.s: MeshLoaderObj.cpp.s
+
 .PHONY : MeshLoaderObj.s
 
-# target to build an object file
-SoloMesh.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/SoloMesh.o
+# target to generate assembly for a file
+MeshLoaderObj.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/MeshLoaderObj.cpp.s
+.PHONY : MeshLoaderObj.cpp.s
+
+SoloMesh.o: SoloMesh.cpp.o
+
 .PHONY : SoloMesh.o
 
-# target to preprocess a source file
-SoloMesh.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/SoloMesh.i
+# target to build an object file
+SoloMesh.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/SoloMesh.cpp.o
+.PHONY : SoloMesh.cpp.o
+
+SoloMesh.i: SoloMesh.cpp.i
+
 .PHONY : SoloMesh.i
 
-# target to generate assembly for a file
-SoloMesh.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/SoloMesh.s
+# target to preprocess a source file
+SoloMesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/SoloMesh.cpp.i
+.PHONY : SoloMesh.cpp.i
+
+SoloMesh.s: SoloMesh.cpp.s
+
 .PHONY : SoloMesh.s
 
-# target to build an object file
-TempObstacle.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/TempObstacle.o
+# target to generate assembly for a file
+SoloMesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/SoloMesh.cpp.s
+.PHONY : SoloMesh.cpp.s
+
+TempObstacle.o: TempObstacle.cpp.o
+
 .PHONY : TempObstacle.o
 
-# target to preprocess a source file
-TempObstacle.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/TempObstacle.i
+# target to build an object file
+TempObstacle.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/TempObstacle.cpp.o
+.PHONY : TempObstacle.cpp.o
+
+TempObstacle.i: TempObstacle.cpp.i
+
 .PHONY : TempObstacle.i
 
-# target to generate assembly for a file
-TempObstacle.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/TempObstacle.s
+# target to preprocess a source file
+TempObstacle.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/TempObstacle.cpp.i
+.PHONY : TempObstacle.cpp.i
+
+TempObstacle.s: TempObstacle.cpp.s
+
 .PHONY : TempObstacle.s
 
-# target to build an object file
-fastlz.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/fastlz.o
+# target to generate assembly for a file
+TempObstacle.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/TempObstacle.cpp.s
+.PHONY : TempObstacle.cpp.s
+
+fastlz.o: fastlz.c.o
+
 .PHONY : fastlz.o
 
-# target to preprocess a source file
-fastlz.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/fastlz.i
+# target to build an object file
+fastlz.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/fastlz.c.o
+.PHONY : fastlz.c.o
+
+fastlz.i: fastlz.c.i
+
 .PHONY : fastlz.i
 
-# target to generate assembly for a file
-fastlz.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/fastlz.s
+# target to preprocess a source file
+fastlz.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/fastlz.c.i
+.PHONY : fastlz.c.i
+
+fastlz.s: fastlz.c.s
+
 .PHONY : fastlz.s
 
-# target to build an object file
-main.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.o
+# target to generate assembly for a file
+fastlz.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/fastlz.c.s
+.PHONY : fastlz.c.s
+
+main.o: main.cpp.o
+
 .PHONY : main.o
 
-# target to preprocess a source file
-main.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.i
+# target to build an object file
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+
 .PHONY : main.i
 
-# target to generate assembly for a file
-main.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.s
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+
 .PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/recast.dir/build.make CMakeFiles/recast.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -376,7 +556,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... main"
+	@echo "... recast"
 	@echo "... ChunkyTriMesh.o"
 	@echo "... ChunkyTriMesh.i"
 	@echo "... ChunkyTriMesh.s"
