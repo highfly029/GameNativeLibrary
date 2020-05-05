@@ -16,6 +16,7 @@ if __name__ == '__main__':
     os.chdir("../project_java/")
 
     shutil.copyfile("../detour_cpp/libGameNativeLibrary.dylib", "src/main/resources/libGameNativeLibrary.dylib")
+    shutil.copyfile("../detour_cpp/libGameNativeLibrary.so", "src/main/resources/libGameNativeLibrary.so")
 
     ret = os.system("mvn -DskipTests clean compile")
 
