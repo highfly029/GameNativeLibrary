@@ -26,6 +26,7 @@ public class GameNativeLibrary {
                 suffix += ".dll";
             } else if (isLinux) {
                 suffix += ".so";
+                libName = "lib"+libName;
             } else if (isMac){
                 suffix += ".dylib";
                 libName = "lib"+libName;
