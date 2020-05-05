@@ -143,7 +143,7 @@ public class GameNativeLibrary {
         GameNativeLibrary gameNativeLibrary = new GameNativeLibrary();
         String path = GameNativeLibrary.class.getResource("/") + "solo_navmesh.bin";
         path = path.substring(5);
-        System.out.println(path);
+//        System.out.println(path);
 
         String name = "first";
         boolean isSuccess = gameNativeLibrary.loadNavMesh(1, name, path);
@@ -164,7 +164,23 @@ public class GameNativeLibrary {
         } else {
             System.out.println("not hit");
         }
+        float[] start = new float[3];
+        float[] end = new float[3];
 
+        start[0] = -1.0f;
+        start[1] = 1.0f;
+        start[2] = 1.0f;
+
+        end[0] = -500.0f;
+        end[1] = 1.0f;
+        end[2] = 200.0f;
+
+        List<float[]> findResult = gameNativeLibrary.findPathStraight(1, name, start[0], start[1], start[2], end[0], end[1], end[2]);
+        if (findResult != null && findResult.size() > 0) {
+            for (float[] f : findResult) {
+                System.out.println("findPoint " + f[0] + " " + f[1] + " " + f[2]);
+            }
+        }
         gameNativeLibrary.release(1, name);
 //        if (meshId <= 0) {
 //            System.out.println("加载地图数据失败");

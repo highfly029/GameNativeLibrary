@@ -19,7 +19,9 @@ void testSolo() {
 		soloMeshMap[name] = tool;
 	}
 
-	SoloMesh* tool2 = soloMeshMap.find(name)->second;
+	string name2 = string("abc");
+
+	SoloMesh* tool2 = soloMeshMap.find(name2)->second;
 
 	if (tool2)
 	{

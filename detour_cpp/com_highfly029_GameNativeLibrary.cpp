@@ -24,14 +24,13 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_setPrint
     env->ReleaseStringUTFChars(name, str);
     if (mode == MODE_SOLOMESH)
     {
-        map<string, SoloMesh*>::iterator iter = soloMeshMap.find(nameStr);
+        map<string, SoloMesh*>::iterator iter = soloMeshMap.find(nameStr);        
         if (iter != soloMeshMap.end())
         {
             if (iter->second != NULL)
             {
                 iter->second->setPrint(bool_isPrint);
             }
-            
         }
             
     } else if (mode == MODE_TILECACHE)
@@ -46,14 +45,15 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_setPrint
  * Signature: (ILjava/lang/String;Ljava/lang/String;)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_loadNavMesh
-  (JNIEnv *env, jobject obj, jint mode, jstring path, jstring name)
+  (JNIEnv *env, jobject obj, jint mode, jstring name, jstring path)
 {
     const char *str = env->GetStringUTFChars(name, 0);
     string nameStr = string(str);
     env->ReleaseStringUTFChars(name, str);
+
     if (nameStr == "")
     {
-        return jint(-1);
+        return jboolean(false);
     }
 
     if (mode == MODE_SOLOMESH)
@@ -61,17 +61,19 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_loadNavMesh
         map<string, SoloMesh*>::iterator iter = soloMeshMap.find(nameStr);
         if (iter != soloMeshMap.end())
         {
-            return true;
+            return jboolean(true);
         }
         SoloMesh* tool = new SoloMesh();
-        bool isSuccess = tool->loadNavMesh(nameStr.c_str());
+        const char *str2 = env->GetStringUTFChars(path, 0);
+        bool isSuccess = tool->loadNavMesh(str2);
+        env->ReleaseStringUTFChars(path, str2);
         if (isSuccess)
         {
             soloMeshMap[nameStr] = tool;
-            return true;
+            return jboolean(true);
         } else 
         {
-            return false;
+            return jboolean(false);
         }
         
     } else if (mode == MODE_TILECACHE)
@@ -79,7 +81,7 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_loadNavMesh
         
     }
     
-    return false;
+    return jboolean(false);
 }
 
 /*
@@ -90,6 +92,53 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_loadNavMesh
 JNIEXPORT jobject JNICALL Java_com_highfly029_GameNativeLibrary_findPathStraight
   (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat x1, jfloat y1, jfloat z1, jfloat x2, jfloat y2, jfloat z2)
 {
+    const char *str = env->GetStringUTFChars(name, 0);
+    string nameStr = string(str);
+    env->ReleaseStringUTFChars(name, str);
+    if (mode == MODE_SOLOMESH)
+    {
+        map<string, SoloMesh*>::iterator iter = soloMeshMap.find(nameStr);
+        if (iter != soloMeshMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                SoloMesh* soloMesh = iter->second;
+                float start[3];
+                start[0] = x1;
+                start[1] = y1;
+                start[2] = z1;
+
+                float end[3];
+                end[0] = x2;
+                end[1] = y2;
+                end[2] = z2;
+                vector<Vector3D> outPaths;
+	            int pointNum = soloMesh->findPathStraight(start, end, outPaths);
+                if (pointNum > 0)
+                {
+                    jclass class_arraylist = env->FindClass("java/util/ArrayList");
+                    jmethodID arraylist_construct_method = env->GetMethodID(class_arraylist, "<init>", "()V");
+                    jobject obj_arraylist = env->NewObject(class_arraylist, arraylist_construct_method, "");
+
+                    jmethodID arraylist_add_method = env->GetMethodID(class_arraylist, "add", "(Ljava/lang/Object;)Z");
+                    vector<Vector3D>::iterator iter = outPaths.begin();
+                    for (; iter != outPaths.end(); ++iter)
+                    {
+                        jfloat tmp[3];
+                        tmp[0] = iter->x;
+                        tmp[1] = iter->y;
+                        tmp[2] = iter->z;
+                        jfloatArray array = (env)->NewFloatArray(3);
+                        env->SetFloatArrayRegion(array, 0, 3, tmp);
+                        env->CallBooleanMethod(obj_arraylist, arraylist_add_method, array);
+                    }                    
+                }   
+            }
+        }  
+    } else if (mode == MODE_TILECACHE)
+    {
+        
+    }
     return NULL;
 }
 

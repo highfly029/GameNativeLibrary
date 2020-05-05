@@ -232,6 +232,7 @@ SoloMesh::SoloMesh() :m_navMesh(0), m_navQuery(0)
 
 void SoloMesh::setPrint(bool isPrint)
 {
+	printf("SoloMesh setPrint %d", isPrint);
 	m_isPrint = isPrint;
 }
 
