@@ -140,10 +140,139 @@ public class GameNativeLibrary {
 
 
     public static void main(String[] args) throws InterruptedException {
+//        testSoloMesh();
+        testTempObstacle();
+    }
+
+    private static void testTempObstacle() {
         GameNativeLibrary gameNativeLibrary = new GameNativeLibrary();
-        String path = GameNativeLibrary.class.getResource("/") + "solo_navmesh.bin";
-        path = path.substring(5);
-//        System.out.println(path);
+        String path;
+        if (GameNativeLibrary.class.getResource("/") != null) {
+            path = GameNativeLibrary.class.getResource("/").getPath() + "all_tiles_tilecache.bin";
+        } else {
+            path = System.getProperty("user.dir") + File.separator + "all_tiles_tilecache.bin";
+        }
+        System.out.println("path=" + path);
+
+        String name = "second";
+        boolean isSuccess = gameNativeLibrary.loadNavMesh(2, name, path);
+        gameNativeLibrary.setPrint(2, name, true);
+        System.out.println(isSuccess);
+        float[] r1 = new float[3];
+        float[] r2 = new float[3];
+        r1[0] = -1.0f;
+        r1[1] = 1.0f;
+        r1[2] = 1.0f;
+
+        r2[0] = -200.0f;
+        r2[1] = 1.0f;
+        r2[2] = 400.0f;
+        float[] result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
+        if (result != null) {
+            System.out.println("hit " + result[0] + " " + result[1] + " " + result[2]);
+        } else {
+            System.out.println("not hit");
+        }
+        float[] start = new float[3];
+        float[] end = new float[3];
+
+        start[0] = -1.0f;
+        start[1] = 1.0f;
+        start[2] = 1.0f;
+
+        end[0] = -500.0f;
+        end[1] = 1.0f;
+        end[2] = 200.0f;
+
+        List<float[]> findResult = gameNativeLibrary.findPathStraight(2, name, start[0], start[1], start[2], end[0], end[1], end[2]);
+        if (findResult != null && findResult.size() > 0) {
+            for (float[] f : findResult) {
+                System.out.println("findPoint " + f[0] + " " + f[1] + " " + f[2]);
+            }
+        }
+        System.out.println("动态阻挡测试");
+        r1[0] = -10.0f;
+        r1[1] = 1.0f;
+        r1[2] = 350.0f;
+
+        r2[0] = -400.0f;
+        r2[1] = 1.0f;
+        r2[2] = 350.0f;
+        result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
+        if (result != null) {
+            System.out.println("hit " + result[0] + " " + result[1] + " " + result[2]);
+        } else {
+            System.out.println("not hit");
+        }
+        float[] boxMin = new float[3];
+        float[] boxMax = new float[3];
+        boxMin[0] = -50.0f;
+        boxMin[1] = 0.0f;
+        boxMin[2] = 340.0f;
+        float width = 14.0f;
+        float length = 14.0f;
+        int len = 2;
+        int[] array = new int[len];
+        for (int i = 0; i < len; i++)
+        {
+            boxMax[0] = boxMin[0] + length;
+            boxMax[1] = boxMin[1] + 10;
+            boxMax[2] = boxMin[2] + width;
+            int idx = gameNativeLibrary.addBoxObstacle(2, name,boxMin[0],boxMin[1],boxMin[2],boxMax[0],boxMax[1],boxMax[2]);
+            array[i] = idx;
+            gameNativeLibrary.update(2, name);
+            result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
+
+            if (result != null) {
+                System.out.println("hit " + result[0] + " " + result[1] + " " + result[2]);
+            } else {
+                System.out.println("not hit");
+            }
+
+            boxMin[0] = boxMax[0];
+            boxMin[1] = boxMax[1];
+            boxMin[2] = boxMax[2];
+        }
+        System.out.println("==============");
+        boolean isRemoveAll = true;
+        if (!isRemoveAll) {
+            for (int i = 0; i < len; i++) {
+                int idx = array[i];
+                boolean isRe = gameNativeLibrary.removeOneObstacle(2, name, idx);
+                System.out.println("isRe=" + isRe);
+                gameNativeLibrary.update(2, name);
+                result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
+
+                if (result != null) {
+                    System.out.println("hit " + result[0] + " " + result[1] + " " + result[2]);
+                } else {
+                    System.out.println("not hit");
+                }
+            }
+        } else {
+            System.out.println("removeAllObstacle");
+            gameNativeLibrary.removeAllObstacle(2, name);
+            gameNativeLibrary.update(2, name);
+            result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
+
+            if (result != null) {
+                System.out.println("hit " + result[0] + " " + result[1] + " " + result[2]);
+            } else {
+                System.out.println("not hit");
+            }
+        }
+        gameNativeLibrary.release(2, name);
+    }
+
+    private static void testSoloMesh() {
+        GameNativeLibrary gameNativeLibrary = new GameNativeLibrary();
+        String path;
+        if (GameNativeLibrary.class.getResource("/")!= null) {
+            path = GameNativeLibrary.class.getResource("/").getPath() + "all_tiles_tilecache.bin";
+        } else {
+            path = System.getProperty("user.dir") + File.separator + "all_tiles_tilecache.bin";
+        }
+        System.out.println("path=" + path);
 
         String name = "first";
         boolean isSuccess = gameNativeLibrary.loadNavMesh(1, name, path);
@@ -182,25 +311,5 @@ public class GameNativeLibrary {
             }
         }
         gameNativeLibrary.release(1, name);
-//        if (meshId <= 0) {
-//            System.out.println("加载地图数据失败");
-//        }
-//
-//        float[] start = new float[3];
-//        start[0] = 1.727072f;
-//        start[1] = 3.570761f;
-//        start[2] = 30.0069f;
-//
-//        float[] end = new float[3];
-//        end[0] = 32.76521f;
-//        end[1] = 2.299392f;
-//        end[2] = -5.955514f;
-//
-//        List<float[]> list = gameNativeLibrary.find(meshId, start[0], start[1], start[2], end[0], end[1], end[2]);
-//
-//        System.out.println("find result");
-//        for (float[] f : list) {
-//            System.out.println(f[0] + " " + f[1] + " " + f[2]);
-//        }
     }
 }

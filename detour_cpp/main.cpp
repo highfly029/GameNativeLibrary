@@ -78,7 +78,8 @@ void testSolo() {
 
 void testTempObstacle() {
 	TempObstacle tool;
-	tool.LoadNavMesh("all_tiles_tilecache.bin");
+	tool.setPrint(true);
+	tool.loadNavMesh("all_tiles_tilecache.bin");
 	printf("hello TempObstacle!\n");
 	float start[3];
 	float end[3];
@@ -91,7 +92,8 @@ void testTempObstacle() {
 	end[2] = 200.0f;
 	// tool.findPathFollow(start, end);
 
-	tool.findPathStraight(start, end);
+	std::vector<Vector3D> outPaths;
+	tool.findPathStraight(start, end, outPaths);
 
 	float r1[3];
 	float r2[3];
@@ -102,7 +104,8 @@ void testTempObstacle() {
 	r2[0] = -200.0f;
 	r2[1] = 1.0f;
 	r2[2] = 400.0f;
-	tool.raycast(r1, r2);
+	float hitPoint[3];
+	tool.raycast(r1, r2, hitPoint);
 
 	printf("动态阻挡测试 \n");
 	r1[0] = -10.0f;
@@ -112,14 +115,14 @@ void testTempObstacle() {
 	r2[0] = -400.0f;
 	r2[1] = 1.0f;
 	r2[2] = 350.0f;
-	tool.raycast(r1, r2);
+	tool.raycast(r1, r2, hitPoint);
 
 	//增加动态阻挡
 	float boxMin[3] = {-50.0f, 0.0f, 340.0f};
 	float boxMax[3];
 	float width = 14.0f;
 	float length = 14.0f;
-	int len = 260;
+	int len = 2;
 	int array[len];
 	for (int i = 0; i < len; i++)
 	{
@@ -129,7 +132,7 @@ void testTempObstacle() {
 		int idx = tool.addBoxObstacle(boxMin, boxMax);
 		array[i] = idx;
 		tool.update();
-		bool isHit = tool.raycast(r1, r2);
+		bool isHit = tool.raycast(r1, r2, hitPoint);
 		printf("test add i=%d, idx=%d, isHit=%d,minX=%.3f,minZ=%.3f,maxX=%.3f,maxZ=%.3f\n", i, idx, isHit,
 		boxMin[0], boxMin[2], boxMax[0], boxMax[2]);
 
@@ -144,7 +147,7 @@ void testTempObstacle() {
 		int idx = array[i];
 		bool result = tool.removeOneObstacle(idx);
 		tool.update();
-		bool isHit = tool.raycast(r1, r2);
+		bool isHit = tool.raycast(r1, r2, hitPoint);
 		printf("test remove i=%d, idx=%d, result=%d, isHit=%d\n", i, idx, result, isHit);
 	}
 
@@ -178,7 +181,7 @@ void testTempObstacle() {
 
 int main(int argc, char* argv[]) {
 	printf("begin!\n");
-	testSolo();
-	// testTempObstacle();
+	// testSolo();
+	testTempObstacle();
 	return 0;
 }

@@ -367,7 +367,6 @@ int SoloMesh::findPathFollow(float sp[3], float ep[3], std::vector<Vector3D>& pa
 		return END_REF_NULL;
 	}
 	
-
 	m_navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
 
 	m_nsmoothPath = 0;
@@ -602,7 +601,7 @@ int SoloMesh::findPathStraight(float sp[3],float ep[3], std::vector<Vector3D>& p
 int SoloMesh::findPathSliced(float sp[3],float ep[3], std::vector<Vector3D>& paths) 
 {
 	printf("SoloMesh findPathSliced not support!\n");
-	return UN_SUPPORT;			
+	return UN_SUPPORT;
 }
 
 bool SoloMesh::raycast(float sp[3], float ep[3], float* hitPoint)
@@ -618,9 +617,13 @@ bool SoloMesh::raycast(float sp[3], float ep[3], float* hitPoint)
 	memset(hitNormal,0,sizeof(hitNormal));
 
 	m_navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
+	if (!m_startRef)
+	{
+		printf("raycast startRef is null\n");
+	}
 	float t = 0;
 	m_npolys = 0;
-	m_navQuery->raycast(m_startRef, m_spos, m_epos, &m_filter, &t, hitNormal, m_polys, &m_npolys, MAX_POLYS);
+	dtStatus status = m_navQuery->raycast(m_startRef, m_spos, m_epos, &m_filter, &t, hitNormal, m_polys, &m_npolys, MAX_POLYS);
 	if (t > 1)
 	{
 		// No hit

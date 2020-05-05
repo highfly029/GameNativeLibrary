@@ -11,6 +11,8 @@
 #include "fastlz.h"
 #include "TempObstacle.h"
 #include "DetourTileCache.h"
+#include "common.h"
+#include <vector>
 
 static const int TILECACHESET_MAGIC = 'T' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'TSET';
 static const int TILECACHESET_VERSION = 1;
@@ -378,9 +380,14 @@ void TempObstacle::setPrint(bool isPrint)
 	m_isPrint = isPrint;
 }
 
-void TempObstacle::LoadMeshFile(const char* file_name){
+dtNavMesh* TempObstacle::loadMeshFile(const char* file_name){
 	FILE* fp = fopen(file_name, "rb");
-	if (!fp) return;
+	printf("loadMeshFile %s\n", file_name);
+	if (!fp)
+	{
+		printf("loadMeshFile file cant open %s!\n", file_name);
+		return 0;
+	}
 
 	// Read header.
 	TileCacheSetHeader header;
@@ -389,43 +396,50 @@ void TempObstacle::LoadMeshFile(const char* file_name){
 	{
 		// Error or early EOF
 		fclose(fp);
-		return;
+		printf("loadMeshFile fread failed!\n");
+		return 0;
 	}
 	if (header.magic != TILECACHESET_MAGIC)
 	{
 		fclose(fp);
-		return;
+		printf("loadMeshFile magic failed!\n");
+		return 0;
 	}
 	if (header.version != TILECACHESET_VERSION)
 	{
 		fclose(fp);
-		return;
+		printf("loadMeshFile version failed!\n");
+		return 0;
 	}
 
 	m_navMesh = dtAllocNavMesh();
 	if (!m_navMesh)
 	{
 		fclose(fp);
-		return;
+		printf("loadMeshFile mesh is null!\n");
+		return 0;
 	}
 	dtStatus status = m_navMesh->init(&header.meshParams);
 	if (dtStatusFailed(status))
 	{
 		fclose(fp);
-		return;
+		printf("loadMeshFile mesh init failed!\n");
+		return 0;
 	}
 
 	m_tileCache = dtAllocTileCache();
 	if (!m_tileCache)
 	{
 		fclose(fp);
-		return;
+		printf("loadMeshFile tileCache is null!\n");
+		return 0;
 	}
 	status = m_tileCache->init(&header.cacheParams, m_talloc, m_tcomp, m_tmproc);
 	if (dtStatusFailed(status))
 	{
 		fclose(fp);
-		return;
+		printf("loadMeshFile tileCache init failed!\n");
+		return 0;
 	}
 
 	// Read tiles.
@@ -437,7 +451,8 @@ void TempObstacle::LoadMeshFile(const char* file_name){
 		{
 			// Error or early EOF
 			fclose(fp);
-			return;
+			printf("loadMeshFile Read tiles failed!\n");
+			return 0;
 		}
 		if (!tileHeader.tileRef || !tileHeader.dataSize)
 			break;
@@ -451,7 +466,8 @@ void TempObstacle::LoadMeshFile(const char* file_name){
 			// Error or early EOF
 			dtFree(data);
 			fclose(fp);
-			return;
+			printf("loadMeshFile Read tiles failed!\n");
+			return 0;
 		}
 
 		dtCompressedTileRef tile = 0;
@@ -466,21 +482,33 @@ void TempObstacle::LoadMeshFile(const char* file_name){
 	}
 
 	fclose(fp);
+	return m_navMesh;
 }
 
-void TempObstacle::LoadNavMesh(const char* file_name) {
+bool TempObstacle::loadNavMesh(const char* file_name) {
 	if (!file_name) {
-		printf("Error File Name!\n");
-		return;
+		printf("loadNavMesh error fileName!\n");
+		return false;
 	}
 
 	dtFreeNavMesh(m_navMesh);
 	dtFreeTileCache(m_tileCache);
-	LoadMeshFile(file_name);
-	m_navQuery->init(m_navMesh, 2048);
+	m_navMesh = loadMeshFile(file_name);
+	if (!m_navMesh)
+	{
+		printf("loadMeshFile failed!\n");
+		return false;
+	}
+	dtStatus status = m_navQuery->init(m_navMesh, 2048);
+	if (dtStatusSucceed(status))
+	{
+		return true;
+	} else {
+		return false;
+	}
 }
 
-void TempObstacle::findPathFollow(float sp[3], float ep[3]) {
+int TempObstacle::findPathFollow(float sp[3], float ep[3], std::vector<Vector3D>& paths) {
 	if (m_isPrint)
 	{
 		printf("TempObstacle findPathFollow\n");
@@ -493,6 +521,15 @@ void TempObstacle::findPathFollow(float sp[3], float ep[3]) {
 
 	m_navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
 	m_navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
+
+	if (!m_startRef)
+	{
+		return START_REF_NULL;
+	}
+	if (!m_endRef)
+	{
+		return END_REF_NULL;
+	}
 
 	m_navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
 	m_nsmoothPath = 0;
@@ -627,26 +664,35 @@ void TempObstacle::findPathFollow(float sp[3], float ep[3]) {
 
 		if (m_nsmoothPath)
 		{
+			int num = 0;
+			Vector3D vector3D;			
 			//打印路径点
 			for (int i = 0; i < m_nsmoothPath; ++i)
 			{
 				float x = m_smoothPath[i * 3];
 				float y = m_smoothPath[i * 3 + 1];
 				float z = m_smoothPath[i * 3 + 2];
+				vector3D.x = x;
+				vector3D.y = y;
+				vector3D.z = z;
+				paths.push_back(vector3D);
 				if (m_isPrint)
 				{
 					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
 				}
+				num++;
 			}
 			if (m_isPrint)
 			{
 				printf("\n");	
 			}	
+			return num;
 		}
 	}
+	return UNKNOWN_FAIL;
 }
 
-void TempObstacle::findPathStraight(float sp[3],float ep[3])
+int TempObstacle::findPathStraight(float sp[3],float ep[3], std::vector<Vector3D>& paths)
 {
 	if (m_isPrint)
 	{
@@ -660,7 +706,15 @@ void TempObstacle::findPathStraight(float sp[3],float ep[3])
 
 	m_navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
 	m_navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
-
+	if (!m_startRef)
+	{
+		return START_REF_NULL;
+	}
+	if (!m_endRef)
+	{
+		return END_REF_NULL;
+	}
+	
 	m_navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
 	m_nstraightPath = 0;
 	if (m_npolys)
@@ -677,31 +731,41 @@ void TempObstacle::findPathStraight(float sp[3],float ep[3])
 
 		if (m_nstraightPath)
 		{
+			int num = 0;
+			Vector3D vector3D;
 			//打印路径点
 			for (int i = 0; i < m_nstraightPath; ++i)
 			{
 				float x = m_straightPath[i * 3];
 				float y = m_straightPath[i * 3 + 1];
 				float z = m_straightPath[i * 3 + 2];
+				vector3D.x = x;
+				vector3D.y = y;
+				vector3D.z = z;
+				paths.push_back(vector3D);
 				if (m_isPrint)
 				{
 					printf("(pos x:%f y:%f z:%f) ", x, y, z);	
 				}
+				num++;
 			}
 			if (m_isPrint)
 			{
 				printf("\n");	
 			}
+			return num;
 		}							
 	}
+	return UNKNOWN_FAIL;
 }
 
-void TempObstacle::findPathSliced(float sp[3],float ep[3])
+int TempObstacle::findPathSliced(float sp[3],float ep[3], std::vector<Vector3D>& paths)
 {
 	printf("TempObstacle findPathSliced not support!\n");
+	return UN_SUPPORT;
 }
 
-bool TempObstacle::raycast(float sp[3],float ep[3])
+bool TempObstacle::raycast(float sp[3],float ep[3], float* hitPoint)
 {
 	bool result = false;
 	for (int i = 0; i < 3; i++) 
@@ -714,9 +778,13 @@ bool TempObstacle::raycast(float sp[3],float ep[3])
 	memset(hitNormal,0,sizeof(hitNormal));
 
 	m_navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
+	if (!m_startRef)
+	{
+		printf("raycast startRef is null\n");
+	}
 	float t = 0;
 	m_npolys = 0;
-	m_navQuery->raycast(m_startRef, m_spos, m_epos, &m_filter, &t, hitNormal, m_polys, &m_npolys, MAX_POLYS);
+	dtStatus status = m_navQuery->raycast(m_startRef, m_spos, m_epos, &m_filter, &t, hitNormal, m_polys, &m_npolys, MAX_POLYS);
 	if (t > 1)
 	{
 		// No hit
@@ -735,9 +803,11 @@ bool TempObstacle::raycast(float sp[3],float ep[3])
 		m_navQuery->getPolyHeight(m_polys[m_npolys-1], m_hitPos, &h);
 		m_hitPos[1] = h;
 	}
-	if (result)
+	if (result && hitPoint)
 	{
-		
+		hitPoint[0] = m_hitPos[0];
+		hitPoint[1] = m_hitPos[1];
+		hitPoint[2] = m_hitPos[2];
 	}
 	if (m_isPrint)
 	{

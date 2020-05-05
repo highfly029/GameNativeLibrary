@@ -46,6 +46,7 @@ public:
 	void setPrint(bool isPrint);
 	dtNavMesh* loadMeshFile(const char* file_name);
 	bool loadNavMesh(const char* file_name);
+	
 	int findPathFollow(float sp[3], float ep[3], std::vector<Vector3D>& paths);
 	int findPathStraight(float sp[3], float ep[3], std::vector<Vector3D>& paths);
 	int findPathSliced(float sp[3], float ep[3], std::vector<Vector3D>& paths);

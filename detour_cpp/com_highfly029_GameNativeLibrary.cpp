@@ -35,7 +35,14 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_setPrint
             
     } else if (mode == MODE_TILECACHE)
     {
-        
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                iter->second->setPrint(bool_isPrint);
+            }
+        }
     }
 }
 
@@ -74,11 +81,26 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_loadNavMesh
         } else 
         {
             return jboolean(false);
-        }
-        
+        } 
     } else if (mode == MODE_TILECACHE)
     {
-        
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);
+        if (iter != tempObstacleMap.end())
+        {
+            return jboolean(true);
+        }
+        TempObstacle* tool = new TempObstacle();
+        const char *str2 = env->GetStringUTFChars(path, 0);
+        bool isSuccess = tool->loadNavMesh(str2);
+        env->ReleaseStringUTFChars(path, str2);
+        if (isSuccess)
+        {
+            tempObstacleMap[nameStr] = tool;
+            return jboolean(true);
+        } else 
+        {
+            return jboolean(false);
+        }         
     }
     
     return jboolean(false);
@@ -131,13 +153,52 @@ JNIEXPORT jobject JNICALL Java_com_highfly029_GameNativeLibrary_findPathStraight
                         jfloatArray array = (env)->NewFloatArray(3);
                         env->SetFloatArrayRegion(array, 0, 3, tmp);
                         env->CallBooleanMethod(obj_arraylist, arraylist_add_method, array);
-                    }                    
+                    }
+                    return obj_arraylist;                    
                 }   
             }
         }  
     } else if (mode == MODE_TILECACHE)
     {
-        
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                float start[3];
+                start[0] = x1;
+                start[1] = y1;
+                start[2] = z1;
+
+                float end[3];
+                end[0] = x2;
+                end[1] = y2;
+                end[2] = z2;
+                vector<Vector3D> outPaths;
+	            int pointNum = tempObstacle->findPathStraight(start, end, outPaths);
+                if (pointNum > 0)
+                {
+                    jclass class_arraylist = env->FindClass("java/util/ArrayList");
+                    jmethodID arraylist_construct_method = env->GetMethodID(class_arraylist, "<init>", "()V");
+                    jobject obj_arraylist = env->NewObject(class_arraylist, arraylist_construct_method, "");
+
+                    jmethodID arraylist_add_method = env->GetMethodID(class_arraylist, "add", "(Ljava/lang/Object;)Z");
+                    vector<Vector3D>::iterator iter = outPaths.begin();
+                    for (; iter != outPaths.end(); ++iter)
+                    {
+                        jfloat tmp[3];
+                        tmp[0] = iter->x;
+                        tmp[1] = iter->y;
+                        tmp[2] = iter->z;
+                        jfloatArray array = (env)->NewFloatArray(3);
+                        env->SetFloatArrayRegion(array, 0, 3, tmp);
+                        env->CallBooleanMethod(obj_arraylist, arraylist_add_method, array);
+                    }
+                    return obj_arraylist;                    
+                }  
+            }
+        }        
     }
     return NULL;
 }
@@ -187,7 +248,35 @@ JNIEXPORT jfloatArray JNICALL Java_com_highfly029_GameNativeLibrary_raycast
         }  
     } else if (mode == MODE_TILECACHE)
     {
-        
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                float start[3];
+                start[0] = x1;
+                start[1] = y1;
+                start[2] = z1;
+
+                float end[3];
+                end[0] = x2;
+                end[1] = y2;
+                end[2] = z2;
+                float hitPoint[3];
+	            bool isHit = tempObstacle->raycast(start, end, hitPoint);
+                if (isHit)
+                {
+                    jfloat tmp[3];
+                    tmp[0] = hitPoint[0];
+                    tmp[1] = hitPoint[1];
+                    tmp[2] = hitPoint[2];
+                    jfloatArray array = (env)->NewFloatArray(3);
+                    env->SetFloatArrayRegion(array, 0, 3, tmp);
+                    return array;
+                }
+            }
+        } 
     }
     return NULL;
 }
@@ -218,7 +307,16 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_release
             
     } else if (mode == MODE_TILECACHE)
     {
-        
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                tempObstacleMap.erase(iter);
+                delete tempObstacle;
+            }
+        } 
     }
 }
 
@@ -230,7 +328,27 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_release
 JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addObstacle
   (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat x, jfloat y, jfloat z, jfloat radius, jfloat height)
 {
-    return 0;
+    const char *str = env->GetStringUTFChars(name, 0);
+    string nameStr = string(str);
+    env->ReleaseStringUTFChars(name, str);
+    if (mode == MODE_TILECACHE)
+    {
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                float pos[3];
+                pos[0] = x;
+                pos[1] = y;
+                pos[2] = z;
+                int index = tempObstacle->addObstacle(pos, radius, height);
+                return jint(index);
+            }
+        } 
+    }
+    return jint(-1);
 }
 
 /*
@@ -241,7 +359,32 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addObstacle
 JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILjava_lang_String_2FFFFFF
   (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat minX, jfloat minY, jfloat minZ, jfloat maxX, jfloat maxY, jfloat maxZ)
 {
-    return 0;
+    const char *str = env->GetStringUTFChars(name, 0);
+    string nameStr = string(str);
+    env->ReleaseStringUTFChars(name, str);
+    if (mode == MODE_TILECACHE)
+    {
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                float min[3];
+                float max[3];
+
+                min[0] = minX;
+                min[1] = minY;
+                min[2] = minZ;
+                max[0] = maxX;
+                max[1] = maxY;
+                max[2] = maxZ;
+                int index = tempObstacle->addBoxObstacle(min, max);
+                return jint(index);
+            }
+        } 
+    }
+    return jint(-1);
 }
 
 /*
@@ -252,7 +395,32 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILj
 JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILjava_lang_String_2FFFFFFF
   (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat centerX, jfloat centerY, jfloat centerZ, jfloat halfExtentsX, jfloat halfExtentsY, jfloat halfExtentsZ, jfloat yRadians)
 {
-    return 0;
+    const char *str = env->GetStringUTFChars(name, 0);
+    string nameStr = string(str);
+    env->ReleaseStringUTFChars(name, str);
+    if (mode == MODE_TILECACHE)
+    {
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                float center[3];
+                float halfExtents[3];
+
+                center[0] = centerX;
+                center[1] = centerY;
+                center[2] = centerZ;
+                halfExtents[0] = halfExtentsX;
+                halfExtents[1] = halfExtentsY;
+                halfExtents[2] = halfExtentsZ;
+                int index = tempObstacle->addBoxObstacle(center, halfExtents, yRadians);
+                return jint(index);
+            }
+        } 
+    }
+    return jint(-1);
 }
 
 /*
@@ -263,7 +431,23 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILj
 JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_removeOneObstacle
   (JNIEnv *env, jobject obj, jint mode, jstring name, jint index)
 {
-    return 0;
+    const char *str = env->GetStringUTFChars(name, 0);
+    string nameStr = string(str);
+    env->ReleaseStringUTFChars(name, str);
+    if (mode == MODE_TILECACHE)
+    {
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                bool result = tempObstacle->removeOneObstacle(index);
+                return jboolean(result);
+            }
+        } 
+    }
+    return jboolean(false);
 }
 
 /*
@@ -274,7 +458,21 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_removeOneObstac
 JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_removeAllObstacle
   (JNIEnv *env, jobject obj, jint mode, jstring name)
 {
-
+    const char *str = env->GetStringUTFChars(name, 0);
+    string nameStr = string(str);
+    env->ReleaseStringUTFChars(name, str);
+    if (mode == MODE_TILECACHE)
+    {
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                tempObstacle->removeAllObstacle();
+            }
+        } 
+    }
 }
 
 /*
@@ -285,5 +483,19 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_removeAllObstacle
 JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_update
   (JNIEnv *env, jobject obj, jint mode, jstring name)
 {
-
+    const char *str = env->GetStringUTFChars(name, 0);
+    string nameStr = string(str);
+    env->ReleaseStringUTFChars(name, str);
+    if (mode == MODE_TILECACHE)
+    {
+        map<string, TempObstacle*>::iterator iter = tempObstacleMap.find(nameStr);        
+        if (iter != tempObstacleMap.end())
+        {
+            if (iter->second != NULL)
+            {
+                TempObstacle* tempObstacle = iter->second;
+                tempObstacle->update();
+            }
+        } 
+    }
 }
