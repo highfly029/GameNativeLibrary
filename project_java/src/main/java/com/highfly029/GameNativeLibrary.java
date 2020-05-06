@@ -111,9 +111,9 @@ public class GameNativeLibrary {
     public native void release(int mode, String name);
 
     /** 增加动态阻挡 **/
-    public native int addObstacle(int mode, String name, float x, float y, float z, float radius, float height);
-    public native int addBoxObstacle(int mode, String name, float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
-    public native int addBoxObstacle(int mode, String name, float centerX, float centerY, float centerZ, float halfExtentsX, float halfExtentsY, float halfExtentsZ, float yRadians);
+    public native int addObstacle(int mode, String name, float x, float y, float z, float radius, float height, boolean isUpdate);
+    public native int addBoxObstacle(int mode, String name, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, boolean isUpdate);
+    public native int addBoxObstacle(int mode, String name, float centerX, float centerY, float centerZ, float halfExtentsX, float halfExtentsY, float halfExtentsZ, float yRadians, boolean isUpdate);
 
     /**
      * 删除一个动态阻挡
@@ -122,14 +122,14 @@ public class GameNativeLibrary {
      * @param index
      * @return
      */
-    public native boolean removeOneObstacle(int mode, String name, int index);
+    public native boolean removeOneObstacle(int mode, String name, int index, boolean isUpdate);
 
     /**
      * 删除全部动态阻挡
      * @param mode
      * @param name
      */
-    public native void removeAllObstacle(int mode, String name);
+    public native void removeAllObstacle(int mode, String name, boolean isUpdate);
 
     /**
      * 更新
@@ -219,7 +219,7 @@ public class GameNativeLibrary {
             boxMax[0] = boxMin[0] + length;
             boxMax[1] = boxMin[1] + 10;
             boxMax[2] = boxMin[2] + width;
-            int idx = gameNativeLibrary.addBoxObstacle(2, name,boxMin[0],boxMin[1],boxMin[2],boxMax[0],boxMax[1],boxMax[2]);
+            int idx = gameNativeLibrary.addBoxObstacle(2, name,boxMin[0],boxMin[1],boxMin[2],boxMax[0],boxMax[1],boxMax[2], false);
             array[i] = idx;
             gameNativeLibrary.update(2, name);
             result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
@@ -239,7 +239,7 @@ public class GameNativeLibrary {
         if (!isRemoveAll) {
             for (int i = 0; i < len; i++) {
                 int idx = array[i];
-                boolean isRe = gameNativeLibrary.removeOneObstacle(2, name, idx);
+                boolean isRe = gameNativeLibrary.removeOneObstacle(2, name, idx, false);
                 System.out.println("isRe=" + isRe);
                 gameNativeLibrary.update(2, name);
                 result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
@@ -252,7 +252,7 @@ public class GameNativeLibrary {
             }
         } else {
             System.out.println("removeAllObstacle");
-            gameNativeLibrary.removeAllObstacle(2, name);
+            gameNativeLibrary.removeAllObstacle(2, name, false);
             gameNativeLibrary.update(2, name);
             result = gameNativeLibrary.raycast(2, name, r1[0], r1[1], r1[2], r2[0], r2[1], r2[2]);
 

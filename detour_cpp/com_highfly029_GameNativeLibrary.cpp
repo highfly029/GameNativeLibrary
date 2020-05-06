@@ -328,7 +328,7 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_release
  * Signature: (ILjava/lang/String;FFFFF)I
  */
 JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addObstacle
-  (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat x, jfloat y, jfloat z, jfloat radius, jfloat height)
+  (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat x, jfloat y, jfloat z, jfloat radius, jfloat height, jboolean isUpdate)
 {
     const char *str = env->GetStringUTFChars(name, 0);
     string nameStr = string(str);
@@ -346,6 +346,11 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addObstacle
                 pos[1] = y;
                 pos[2] = z;
                 int index = tempObstacle->addObstacle(pos, radius, height);
+                if (index > -1 && isUpdate == JNI_TRUE)
+                {
+                    tempObstacle->update();
+                }
+                
                 return jint(index);
             }
         } 
@@ -358,8 +363,8 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addObstacle
  * Method:    addBoxObstacle
  * Signature: (ILjava/lang/String;FFFFFF)I
  */
-JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILjava_lang_String_2FFFFFF
-  (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat minX, jfloat minY, jfloat minZ, jfloat maxX, jfloat maxY, jfloat maxZ)
+JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILjava_lang_String_2FFFFFFZ
+  (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat minX, jfloat minY, jfloat minZ, jfloat maxX, jfloat maxY, jfloat maxZ, jboolean isUpdate)
 {
     const char *str = env->GetStringUTFChars(name, 0);
     string nameStr = string(str);
@@ -382,6 +387,10 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILj
                 max[1] = maxY;
                 max[2] = maxZ;
                 int index = tempObstacle->addBoxObstacle(min, max);
+                if (index > -1 && isUpdate == JNI_TRUE)
+                {
+                    tempObstacle->update();
+                }
                 return jint(index);
             }
         } 
@@ -394,8 +403,8 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILj
  * Method:    addBoxObstacle
  * Signature: (ILjava/lang/String;FFFFFFF)I
  */
-JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILjava_lang_String_2FFFFFFF
-  (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat centerX, jfloat centerY, jfloat centerZ, jfloat halfExtentsX, jfloat halfExtentsY, jfloat halfExtentsZ, jfloat yRadians)
+JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILjava_lang_String_2FFFFFFFZ
+  (JNIEnv *env, jobject obj, jint mode, jstring name, jfloat centerX, jfloat centerY, jfloat centerZ, jfloat halfExtentsX, jfloat halfExtentsY, jfloat halfExtentsZ, jfloat yRadians, jboolean isUpdate)
 {
     const char *str = env->GetStringUTFChars(name, 0);
     string nameStr = string(str);
@@ -418,6 +427,10 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILj
                 halfExtents[1] = halfExtentsY;
                 halfExtents[2] = halfExtentsZ;
                 int index = tempObstacle->addBoxObstacle(center, halfExtents, yRadians);
+                if (index > -1 && isUpdate == JNI_TRUE)
+                {
+                    tempObstacle->update();
+                }
                 return jint(index);
             }
         } 
@@ -431,7 +444,7 @@ JNIEXPORT jint JNICALL Java_com_highfly029_GameNativeLibrary_addBoxObstacle__ILj
  * Signature: (ILjava/lang/String;I)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_removeOneObstacle
-  (JNIEnv *env, jobject obj, jint mode, jstring name, jint index)
+  (JNIEnv *env, jobject obj, jint mode, jstring name, jint index, jboolean isUpdate)
 {
     const char *str = env->GetStringUTFChars(name, 0);
     string nameStr = string(str);
@@ -445,6 +458,10 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_removeOneObstac
             {
                 TempObstacle* tempObstacle = iter->second;
                 bool result = tempObstacle->removeOneObstacle(index);
+                if (result && isUpdate == JNI_TRUE)
+                {
+                    tempObstacle->update();
+                }
                 return jboolean(result);
             }
         } 
@@ -458,7 +475,7 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_removeOneObstac
  * Signature: (ILjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_removeAllObstacle
-  (JNIEnv *env, jobject obj, jint mode, jstring name)
+  (JNIEnv *env, jobject obj, jint mode, jstring name, jboolean isUpdate)
 {
     const char *str = env->GetStringUTFChars(name, 0);
     string nameStr = string(str);
@@ -472,6 +489,10 @@ JNIEXPORT void JNICALL Java_com_highfly029_GameNativeLibrary_removeAllObstacle
             {
                 TempObstacle* tempObstacle = iter->second;
                 tempObstacle->removeAllObstacle();
+                if (isUpdate == JNI_TRUE)
+                {
+                    tempObstacle->update();
+                }
             }
         } 
     }
