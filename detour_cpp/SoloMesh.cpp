@@ -269,14 +269,14 @@ dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 		return 0;
 	}
 
-	dtNavMesh* mesh = dtAllocNavMesh();
-	if (!mesh)
+	m_navMesh = dtAllocNavMesh();
+	if (!m_navMesh)
 	{
 		fclose(fp);
 		printf("loadMeshFile mesh is null!\n");
 		return 0;
 	}
-	dtStatus status = mesh->init(&header.params);
+	dtStatus status = m_navMesh->init(&header.params);
 	if (dtStatusFailed(status))
 	{
 		fclose(fp);
@@ -311,12 +311,12 @@ dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 			return 0;
 		}
 
-		mesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);
+		m_navMesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);
 	}
 
 	fclose(fp);
 
-	return mesh;
+	return m_navMesh;
 }
 
 bool SoloMesh::loadNavMesh(const char* file_name) 

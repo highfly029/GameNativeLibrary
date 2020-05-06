@@ -122,7 +122,7 @@ void testTempObstacle() {
 	float boxMax[3];
 	float width = 14.0f;
 	float length = 14.0f;
-	int len = 2;
+	int len = 128;
 	int array[len];
 	for (int i = 0; i < len; i++)
 	{
@@ -181,7 +181,7 @@ void testTempObstacle() {
 
 int main(int argc, char* argv[]) {
 	printf("begin!\n");
-	// testSolo();
+	testSolo();
 	testTempObstacle();
 	return 0;
 }

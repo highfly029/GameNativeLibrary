@@ -80,6 +80,7 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_loadNavMesh
             return jboolean(true);
         } else 
         {
+            delete tool;
             return jboolean(false);
         } 
     } else if (mode == MODE_TILECACHE)
@@ -99,6 +100,7 @@ JNIEXPORT jboolean JNICALL Java_com_highfly029_GameNativeLibrary_loadNavMesh
             return jboolean(true);
         } else 
         {
+            delete tool;
             return jboolean(false);
         }         
     }
