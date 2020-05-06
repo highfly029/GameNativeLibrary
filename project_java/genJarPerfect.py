@@ -5,19 +5,31 @@ import os
 import subprocess
 import sys
 import shutil
+import platform
 
 if __name__ == '__main__':
+    osName = platform.system()
+    print("osName=" + osName)
+
+    genLibCmd = ""
+    if osName == "Darwin":
+        genLibCmd = "./macGenLib.sh"
+    elif osName == "Linux":
+        genLibCmd = "./linuxGenLib.sh"
+
     os.chdir("../detour_cpp/")
-    genLibCmd = "./macGenLib.sh"
+    
     ret = subprocess.call(genLibCmd, shell=True)
     if (ret != 0):
         print("genLibCmd failed!")
 
     os.chdir("../project_java/")
 
-    shutil.copyfile("../detour_cpp/libGameNativeLibrary.dylib", "src/main/resources/libGameNativeLibrary.dylib")
-    shutil.copyfile("../detour_cpp/libGameNativeLibrary.so", "src/main/resources/libGameNativeLibrary.so")
-
+    if osName == "Darwin":
+        shutil.copyfile("../detour_cpp/libGameNativeLibrary.dylib", "src/main/resources/libGameNativeLibrary.dylib")
+    elif osName == "Linux":
+        shutil.copyfile("../detour_cpp/libGameNativeLibrary.so", "src/main/resources/libGameNativeLibrary.so")
+    
     ret = os.system("mvn -DskipTests clean compile")
 
     if (ret != 0):
