@@ -354,7 +354,7 @@ TempObstacle::~TempObstacle()
 	dtFreeTileCache(m_tileCache);
 }
 
-TempObstacle::TempObstacle() :m_navMesh(0), m_navQuery(0), m_tileCache(0)
+TempObstacle::TempObstacle() :m_navMesh(0), m_navQuery(0), m_tileCache(0), m_isPrint(false)
 {
 	if (m_isPrint)
 	{
@@ -382,7 +382,6 @@ void TempObstacle::setPrint(bool isPrint)
 
 dtNavMesh* TempObstacle::loadMeshFile(const char* file_name){
 	FILE* fp = fopen(file_name, "rb");
-	printf("loadMeshFile %s\n", file_name);
 	if (!fp)
 	{
 		printf("loadMeshFile file cant open %s!\n", file_name);

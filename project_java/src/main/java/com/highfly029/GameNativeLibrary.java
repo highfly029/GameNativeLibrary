@@ -52,7 +52,7 @@ public class GameNativeLibrary {
                 fileOutputStream.write(out.toByteArray());
                 fileOutputStream.close();
                 System.load(f.getAbsolutePath());
-                System.out.println("load GameNativeLibrary.jar success! path=" + f.getAbsolutePath());
+//                System.out.println("load GameNativeLibrary.jar success! path=" + f.getAbsolutePath());
             }
         } catch (Exception e) {
             e.printStackTrace();

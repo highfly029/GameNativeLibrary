@@ -214,7 +214,7 @@ SoloMesh::~SoloMesh()
 	m_nstraightPath = 0;
 }
 
-SoloMesh::SoloMesh() :m_navMesh(0), m_navQuery(0)
+SoloMesh::SoloMesh() :m_navMesh(0), m_navQuery(0), m_isPrint(false)
 {
 	if (m_isPrint)
 	{
@@ -232,14 +232,12 @@ SoloMesh::SoloMesh() :m_navMesh(0), m_navQuery(0)
 
 void SoloMesh::setPrint(bool isPrint)
 {
-	printf("SoloMesh setPrint %d", isPrint);
 	m_isPrint = isPrint;
 }
 
 dtNavMesh* SoloMesh::loadMeshFile(const char* file_name)
 {
 	FILE* fp = fopen(file_name, "rb");
-	printf("loadMeshFile %s\n", file_name);
 	if (!fp)
 	{
 		printf("loadMeshFile file cant open %s!\n", file_name);

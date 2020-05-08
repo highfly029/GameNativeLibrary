@@ -36,7 +36,7 @@ void testSolo() {
 	
 	
 	tool->setPrint(true);
-	tool->loadNavMesh("/Users/highfly029/Documents/project/GameNativeLibrary/project_java/target/classes/solo_navmesh.bin");
+	tool->loadNavMesh("solo_navmesh.bin");
 	printf("hello SoloMesh!\n");
 	float start[3];
 	float end[3];
@@ -71,6 +71,15 @@ void testSolo() {
 	r2[0] = -200.0f;
 	r2[1] = 1.0f;
 	r2[2] = 400.0f;
+
+	r1[0] = 10.0f;
+	r1[1] = 0.0f;
+	r1[2] = 10.0f;
+
+	r2[0] = 10.0f;
+	r2[1] = 0.0f;
+	r2[2] = 15.0f;
+
 	float hitPoint[3];
 	tool->raycast(r1, r2, hitPoint);
 	printf("hitPoint x=%f,y=%f,z=%f", hitPoint[0], hitPoint[1], hitPoint[2]);
@@ -181,7 +190,7 @@ void testTempObstacle() {
 
 int main(int argc, char* argv[]) {
 	printf("begin!\n");
-	// testSolo();
-	testTempObstacle();
+	testSolo();
+	// testTempObstacle();
 	return 0;
 }
