@@ -156,6 +156,7 @@ JNIEXPORT jobject JNICALL Java_com_highfly029_GameNativeLibrary_findPathStraight
                         env->SetFloatArrayRegion(array, 0, 3, tmp);
                         env->CallBooleanMethod(obj_arraylist, arraylist_add_method, array);
                     }
+                    env->DeleteLocalRef(class_arraylist);
                     return obj_arraylist;                    
                 }   
             }
@@ -197,6 +198,7 @@ JNIEXPORT jobject JNICALL Java_com_highfly029_GameNativeLibrary_findPathStraight
                         env->SetFloatArrayRegion(array, 0, 3, tmp);
                         env->CallBooleanMethod(obj_arraylist, arraylist_add_method, array);
                     }
+                    env->DeleteLocalRef(class_arraylist);
                     return obj_arraylist;                    
                 }  
             }

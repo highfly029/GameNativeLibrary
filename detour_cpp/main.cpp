@@ -2,6 +2,10 @@
 #include "TempObstacle.h"
 #include <map>
 #include <string>
+//linux
+#include <unistd.h>
+
+
 using namespace std;
 
 void testSolo() {
@@ -190,7 +194,13 @@ void testTempObstacle() {
 
 int main(int argc, char* argv[]) {
 	printf("begin!\n");
-	testSolo();
-	// testTempObstacle();
+	// testSolo();
+	while (true)
+	{
+		sleep(1);
+		testTempObstacle();
+	}
+	
+	
 	return 0;
 }

@@ -350,6 +350,9 @@ TempObstacle::~TempObstacle()
 	m_npolys = 0;
 	m_nsmoothPath = 0;
 	m_nstraightPath = 0;
+	delete m_talloc;
+	delete m_tcomp;
+	delete m_tmproc;
 
 	dtFreeTileCache(m_tileCache);
 }
