@@ -194,12 +194,12 @@ void testTempObstacle() {
 
 int main(int argc, char* argv[]) {
 	printf("begin!\n");
-	// testSolo();
-	while (true)
-	{
-		sleep(1);
-		testTempObstacle();
-	}
+	testSolo();
+	// while (true)
+	// {
+	// 	sleep(1);
+	// 	testTempObstacle();
+	// }
 	
 	
 	return 0;
