@@ -195,6 +195,7 @@ void testTempObstacle() {
 int main(int argc, char* argv[]) {
 	printf("begin!\n");
 	testSolo();
+	testTempObstacle();
 	// while (true)
 	// {
 	// 	sleep(1);

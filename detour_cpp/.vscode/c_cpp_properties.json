@@ -4,6 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/Detour/Include",
+                "${workspaceFolder}/common/Include",
                 "${env.JAVA_HOME}/include",
                 "${env.JAVA_HOME}/include/darwin"
             ],
